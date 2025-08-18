@@ -49,7 +49,19 @@ arch-linux/
 ### Phase 1: Pre-installation (From Arch Linux Live USB)
 
 1. **Boot Arch Linux Live USB**
-2. **Copy my dotfiles from USB**:
+
+2. **Download dotfiles** (choose one option):
+
+   **Option A: With Active Ethernet Connection**
+   ```bash
+   # Clone directly from GitHub repository
+   git clone https://github.com/cpalau/arch-linux-dotfiles.git /root/arch-linux
+   cd /root/arch-linux
+   # Make setup script executable
+   chmod +x setup
+   ```
+
+   **Option B: From USB Drive**
    ```bash
    # Mount your USB drive (replace sdX1 with your USB device)
    mount /dev/sdX1 /mnt
@@ -59,7 +71,7 @@ arch-linux/
    # Make setup script executable
    chmod +x setup
    ```
-3. **Configure my WiFi credentials**:
+3. **Configure WiFi credentials** (skip if using ethernet):
    ```bash
    # Edit the existing configuration file
    echo "WIFI_SSID=your_network_name" > config/setup_passwords.env
