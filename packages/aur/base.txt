@@ -1,0 +1,4 @@
+# AUR Base Packages
+# Essential packages from Arch User Repository
+
+# Add essential AUR packages here

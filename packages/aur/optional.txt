@@ -1,0 +1,4 @@
+# AUR Optional Packages
+# Additional optional packages from Arch User Repository
+
+# Add optional AUR packages here

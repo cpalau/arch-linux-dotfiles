@@ -1,0 +1,4 @@
+# AUR Desktop Applications
+# Desktop applications from Arch User Repository
+
+# Add desktop applications from AUR here
