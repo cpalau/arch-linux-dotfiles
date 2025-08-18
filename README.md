@@ -198,9 +198,24 @@ I create my archinstall configuration file. Example structure:
 ## 🤝 Contributing
 
 1. Create your feature branch
-2. Follow my existing code structure
-3. Test your changes
-4. Submit a pull request
+2. Follow the existing code structure and conventions
+3. Use **Conventional Commits** for all commit messages:
+   - `feat:` for new features
+   - `fix:` for bug fixes
+   - `docs:` for documentation changes
+   - `refactor:` for code refactoring
+   - `test:` for adding tests
+   - `chore:` for maintenance tasks
+4. Test your changes thoroughly
+5. Submit a pull request with a clear description
+
+### Commit Message Examples
+```bash
+feat: add new package installation script
+fix: resolve WiFi connection timeout issue
+docs: update installation instructions
+refactor: improve network detection logic
+```
 
 ## 📝 Notes
 
