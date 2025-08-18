@@ -3,3 +3,6 @@
 
 # Add essential packages here
 # Format: - package_name
+
+# Modern text editor
+- neovim
