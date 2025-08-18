@@ -38,10 +38,16 @@ arch-linux/
 │   ├── .gitconfig                 # My git configuration (to be created)
 │   └── .config/                   # My application configurations (to be created)
 ├── packages/
-│   ├── base.txt                   # My essential packages (to be created)
-│   ├── development.txt            # My development tools (to be created)
-│   ├── desktop.txt                # My desktop environment packages (to be created)
-│   └── optional.txt               # My optional packages (to be created)
+│   ├── pacman/
+│   │   ├── base.txt               # Essential system packages (official repos)
+│   │   ├── development.txt        # Development tools (official repos) 
+│   │   ├── desktop.txt            # Desktop environment (official repos)
+│   │   └── optional.txt           # Additional packages (official repos)
+│   └── aur/
+│       ├── base.txt               # Essential packages from AUR
+│       ├── development.txt        # Development tools from AUR
+│       ├── desktop.txt            # Desktop applications from AUR
+│       └── optional.txt           # Optional AUR packages
 └── README.md                      # This documentation ✅
 ```
 
@@ -162,12 +168,27 @@ I create my archinstall configuration file. Example structure:
 }
 ```
 
-## 📦 Package Categories
+## 📦 Package Management Structure
 
-- **base.txt**: My essential system packages
-- **development.txt**: My development tools (git, vim, nodejs, etc.)
-- **desktop.txt**: My desktop environment packages
-- **optional.txt**: My additional optional software
+The package installation system is organized by package manager for maximum clarity:
+
+### Official Repositories (`pacman/`)
+- **base.txt**: Essential system packages (sudo, git, vim, etc.)
+- **development.txt**: Development tools from official repos (gcc, python, nodejs, etc.)
+- **desktop.txt**: Desktop environment packages (gnome, firefox, etc.)
+- **optional.txt**: Additional software from official repositories
+
+### Arch User Repository (`aur/`)
+- **base.txt**: Essential packages from AUR (yay, base-devel extensions, etc.)
+- **development.txt**: Development tools from AUR (visual-studio-code-bin, etc.)
+- **desktop.txt**: Desktop applications from AUR (discord, spotify, etc.)
+- **optional.txt**: Optional AUR packages (games, specialized tools, etc.)
+
+This structure ensures:
+- **Clear separation** between official and AUR packages
+- **Efficient installation** (batch install per package manager)
+- **Easy maintenance** and customization
+- **No ambiguity** about which package manager to use
 
 ## 🔧 Available Commands
 
