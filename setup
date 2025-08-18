@@ -1,0 +1,120 @@
+#!/bin/bash
+
+# Main setup script for Arch Linux dotfiles
+# Entry point for the installation process
+# Created by: Cristian Palau
+
+set -e  # Exit on any error
+
+# Get the script directory
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# Source utilities
+source "$SCRIPT_DIR/scripts/utils/colors.sh"
+source "$SCRIPT_DIR/scripts/utils/logging.sh"
+source "$SCRIPT_DIR/scripts/utils/helpers.sh"
+
+# Script version
+VERSION="1.0.0"
+
+show_usage() {
+    echo "Arch Linux Dotfiles Setup v$VERSION"
+    echo ""
+    echo "Usage: $0 [OPTION]"
+    echo ""
+    echo "Options:"
+    echo "  pre-install     Run pre-installation setup (WiFi + archinstall)"
+    echo "  post-install    Run post-installation setup (packages + dotfiles)"
+    echo "  full            Run complete setup (pre + post installation)"
+    echo "  -h, --help      Show this help message"
+    echo "  -v, --version   Show version information"
+    echo ""
+    echo "Examples:"
+    echo "  $0 pre-install      # Run from Arch Linux live USB"
+    echo "  $0 post-install     # Run from installed system"
+    echo "  $0 full            # Run complete setup process"
+}
+
+show_banner() {
+    echo -e "${CYAN}"
+    echo "╔══════════════════════════════════════════════════════════════════════════════╗"
+    echo "║                          Arch Linux Dotfiles Setup                          ║"
+    echo "║                                Version $VERSION                                ║"
+    echo "╚══════════════════════════════════════════════════════════════════════════════╝"
+    echo -e "${NC}"
+}
+
+run_pre_install() {
+    log_step "Starting pre-installation phase..."
+    
+    if [ ! -f "$SCRIPT_DIR/scripts/00-pre-install.sh" ]; then
+        log_error "Pre-installation script not found!"
+        exit 1
+    fi
+    
+    bash "$SCRIPT_DIR/scripts/00-pre-install.sh"
+    
+    log_success "Pre-installation completed!"
+    log_info "Please reboot into your new Arch Linux system and run:"
+    log_info "$0 post-install"
+}
+
+run_post_install() {
+    log_step "Starting post-installation phase..."
+    log_warn "Post-installation scripts are not yet implemented."
+    log_info "Available scripts to implement:"
+    log_info "  - 01-post-install.sh (system configuration)"
+    log_info "  - 02-packages.sh (package installation)"
+    log_info "  - 03-dotfiles.sh (dotfiles deployment)"
+    log_info "  - 04-services.sh (service configuration)"
+}
+
+run_full_setup() {
+    log_step "Starting full setup process..."
+    
+    if confirm "This will run the complete setup process. Continue?"; then
+        run_pre_install
+        
+        log_info "Waiting for system reboot and post-installation..."
+        log_info "After rebooting, run: $0 post-install"
+    else
+        log_info "Setup cancelled by user."
+        exit 0
+    fi
+}
+
+# Main execution
+main() {
+    show_banner
+    
+    case "${1:-}" in
+        pre-install)
+            run_pre_install
+            ;;
+        post-install)
+            run_post_install
+            ;;
+        full)
+            run_full_setup
+            ;;
+        -h|--help)
+            show_usage
+            ;;
+        -v|--version)
+            echo "Arch Linux Dotfiles Setup v$VERSION"
+            ;;
+        "")
+            log_error "No option specified."
+            show_usage
+            exit 1
+            ;;
+        *)
+            log_error "Unknown option: $1"
+            show_usage
+            exit 1
+            ;;
+    esac
+}
+
+# Execute main function with all arguments
+main "$@"
