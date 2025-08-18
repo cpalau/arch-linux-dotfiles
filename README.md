@@ -4,7 +4,8 @@ My comprehensive, modular setup system for Arch Linux installation and configura
 
 ## 🚀 Features
 
-- **Automated WiFi Setup**: I've created scripts that connect to WiFi networks using configuration files
+- **Automated Network Detection**: I've created smart network detection that automatically uses ethernet when available
+- **Automated WiFi Setup**: I've created scripts that connect to WiFi networks using configuration files  
 - **Archinstall Integration**: I use JSON configuration for consistent installations
 - **Modular Architecture**: I've designed separate scripts for different setup phases
 - **Dotfiles Management**: I've built automated deployment of configuration files
@@ -22,7 +23,7 @@ arch-linux/
 │   ├── user.env                   # My user preferences (to be created)
 │   └── packages.txt               # My additional package lists (to be created)
 ├── scripts/
-│   ├── 00-pre-install.sh          # My WiFi setup + archinstall execution ✅
+│   ├── 00-pre-install.sh          # Network detection + WiFi/ethernet setup + archinstall execution ✅
 │   ├── 01-post-install.sh         # My post-installation configuration (to be created)
 │   ├── 02-packages.sh             # My package installation (to be created)
 │   ├── 03-dotfiles.sh             # My dotfiles deployment (to be created)
@@ -83,8 +84,9 @@ arch-linux/
    ```
 
 This will:
+- **Automatically detect network connections** (ethernet takes priority over WiFi)
 - Configure Spanish keyboard layout
-- Connect to my WiFi network
+- Connect to WiFi network (only if ethernet is not available)
 - Update package sources
 - Install git and wget
 - Execute archinstall (when I configure it)
@@ -111,9 +113,32 @@ For my complete automated setup:
 ./setup full
 ```
 
+## 🌐 Network Connection Management
+
+The setup script includes intelligent network detection that prioritizes ethernet connections:
+
+### Automatic Network Detection
+- **Ethernet Priority**: The script automatically detects active ethernet connections and verifies connectivity to archlinux.org
+- **WiFi Fallback**: WiFi setup is only performed when ethernet is unavailable or cannot reach archlinux.org
+- **Arch Linux Connectivity**: All connections are verified against archlinux.org to ensure package downloads will work
+
+### Connection Types Supported
+- **Ethernet**: Automatic detection of `eth*` and `en*` interfaces with active IP addresses
+- **WiFi**: Manual configuration through `setup_passwords.env` file (used as fallback)
+
+### How It Works
+1. **Detection Phase**: Script scans for active ethernet interfaces with IP addresses
+2. **Connectivity Test**: Tests connection to archlinux.org to ensure package repositories are accessible
+3. **Priority Logic**: If ethernet passes connectivity test, WiFi setup is completely skipped
+4. **Fallback Mode**: If ethernet fails or is unavailable, proceed with WiFi configuration
+5. **Final Verification**: All connections are tested against archlinux.org before proceeding
+
 ## ⚙️ Configuration Files
 
 ### WiFi Configuration (`config/setup_passwords.env`)
+
+**Note**: This file is only required if you don't have an active ethernet connection. The script will automatically detect ethernet connections and skip WiFi setup when ethernet is available.
+
 ```bash
 WIFI_SSID=your_network_name
 WIFI_PASSWORD=your_password
@@ -179,9 +204,10 @@ I create my archinstall configuration file. Example structure:
 
 ## 📝 Notes
 
+- The script **automatically detects ethernet connections** and prioritizes them over WiFi
+- WiFi configuration (`config/setup_passwords.env`) is **only required** when no ethernet connection is available  
 - I run `./setup pre-install` from the Arch Linux live USB environment
 - I run `./setup post-install` from the installed Arch Linux system
-- Make sure to configure `config/setup_passwords.env` before running pre-install
 - My system uses modular scripts for easy maintenance and customization
 
 ## 🔒 Security

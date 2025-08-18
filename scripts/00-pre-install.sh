@@ -17,24 +17,39 @@ source "$SCRIPT_DIR/utils/helpers.sh"
 
 log_step "Starting Arch Linux pre-installation setup..."
 
-# Verify that .env file exists
-ENV_FILE="$PROJECT_ROOT/config/setup_passwords.env"
-if [ ! -f "$ENV_FILE" ]; then
-    log_error "$ENV_FILE file not found"
-    echo "Create a setup_passwords.env file in the config directory with the following format:"
-    echo "WIFI_SSID=your_wifi_network"
-    echo "WIFI_PASSWORD=your_password"
-    exit 1
+# Check for existing network connection before WiFi setup
+log_step "Checking for existing network connection..."
+if check_network_connection; then
+    log_success "Network connection already available, skipping WiFi setup"
+    SKIP_WIFI_SETUP=true
+else
+    log_info "No active network connection detected, proceeding with WiFi setup"
+    SKIP_WIFI_SETUP=false
 fi
 
-# Load variables from .env file
-log_info "Loading WiFi configuration from config/setup_passwords.env..."
-source "$ENV_FILE"
+# Only check WiFi credentials if we need to set up WiFi
+if [ "$SKIP_WIFI_SETUP" = false ]; then
+    # Verify that .env file exists
+    ENV_FILE="$PROJECT_ROOT/config/setup_passwords.env"
+    if [ ! -f "$ENV_FILE" ]; then
+        log_error "$ENV_FILE file not found"
+        echo "Create a setup_passwords.env file in the config directory with the following format:"
+        echo "WIFI_SSID=your_wifi_network"
+        echo "WIFI_PASSWORD=your_password"
+        exit 1
+    fi
 
-# Verify that required variables are defined
-if [ -z "$WIFI_SSID" ] || [ -z "$WIFI_PASSWORD" ]; then
-    log_error "WIFI_SSID and/or WIFI_PASSWORD variables not defined in $ENV_FILE"
-    exit 1
+    # Load variables from .env file
+    log_info "Loading WiFi configuration from config/setup_passwords.env..."
+    source "$ENV_FILE"
+
+    # Verify that required variables are defined
+    if [ -z "$WIFI_SSID" ] || [ -z "$WIFI_PASSWORD" ]; then
+        log_error "WIFI_SSID and/or WIFI_PASSWORD variables not defined in $ENV_FILE"
+        exit 1
+    fi
+else
+    log_info "WiFi configuration check skipped (using ethernet connection)"
 fi
 
 log_step "Increasing console font size for better visibility..."
@@ -67,84 +82,104 @@ else
     exit 1
 fi
 
-log_step "Starting WiFi configuration..."
+# WiFi setup (skip if ethernet connection is active)
+if [ "$SKIP_WIFI_SETUP" = false ]; then
+    log_step "Starting WiFi configuration..."
 
-# Verify that iwctl is available
-if ! command_exists iwctl; then
-    log_error "iwctl is not available. Make sure you are in the Arch Linux live environment"
-    exit 1
-fi
+    # Verify that iwctl is available
+    if ! command_exists iwctl; then
+        log_error "iwctl is not available. Make sure you are in the Arch Linux live environment"
+        exit 1
+    fi
 
-# Get WiFi interface name
-WIFI_INTERFACE=$(iwctl device list | grep -Eo 'wlan[0-9]+')
+    # Get WiFi interface name
+    WIFI_INTERFACE=$(iwctl device list | grep -Eo 'wlan[0-9]+')
 
-if [ -z "$WIFI_INTERFACE" ]; then
-    log_error "No WiFi interface found"
-    exit 1
-fi
+    if [ -z "$WIFI_INTERFACE" ]; then
+        log_error "No WiFi interface found"
+        exit 1
+    fi
 
-log_info "WiFi interface detected: $WIFI_INTERFACE"
+    log_info "WiFi interface detected: $WIFI_INTERFACE"
 
-# Enable WiFi interface if disabled
-log_info "Enabling WiFi interface..."
-iwctl device "$WIFI_INTERFACE" set-property Powered on
+    # Enable WiFi interface if disabled
+    log_info "Enabling WiFi interface..."
+    iwctl device "$WIFI_INTERFACE" set-property Powered on
 
-# Scan available networks
-log_info "Scanning available WiFi networks..."
-iwctl station "$WIFI_INTERFACE" scan
+    # Scan available networks
+    log_info "Scanning available WiFi networks..."
+    iwctl station "$WIFI_INTERFACE" scan
 
-# Wait a bit for scan to complete
-sleep 3
-
-# Check if network is available
-log_info "Verifying that network '$WIFI_SSID' is available..."
-if iwctl station "$WIFI_INTERFACE" get-networks | grep -q "$WIFI_SSID"; then
-    log_success "Network '$WIFI_SSID' found"
-else
-    log_warn "Network '$WIFI_SSID' not found. Available networks:"
-    iwctl station "$WIFI_INTERFACE" get-networks
-    exit 1
-fi
-
-# Connect to WiFi network
-log_info "Connecting to network '$WIFI_SSID'..."
-
-# Create temporary file with password to avoid showing it in command line
-TEMP_PASSFILE=$(mktemp)
-echo "$WIFI_PASSWORD" > "$TEMP_PASSFILE"
-
-# Connect using password file
-if iwctl --passphrase="$WIFI_PASSWORD" station "$WIFI_INTERFACE" connect "$WIFI_SSID"; then
-    log_success "Connection established successfully"
-else
-    log_error "Error connecting to WiFi network"
-    rm -f "$TEMP_PASSFILE"
-    exit 1
-fi
-
-# Clean up temporary file
-rm -f "$TEMP_PASSFILE"
-
-# Verify connectivity
-log_info "Verifying connectivity..."
-sleep 5
-
-if check_internet; then
-    log_success "✓ Internet connection established successfully"
-    log_success "✓ Keyboard configured in Spanish"
-    log_success "✓ Terminal font configured"
-    log_success "✓ System ready to continue with installation"
-else
-    log_warn "Connection established but no internet access. Verifying..."
-    # Try to get IP via DHCP
-    dhcpcd "$WIFI_INTERFACE"
+    # Wait a bit for scan to complete
     sleep 3
+
+    # Check if network is available
+    log_info "Verifying that network '$WIFI_SSID' is available..."
+    if iwctl station "$WIFI_INTERFACE" get-networks | grep -q "$WIFI_SSID"; then
+        log_success "Network '$WIFI_SSID' found"
+    else
+        log_warn "Network '$WIFI_SSID' not found. Available networks:"
+        iwctl station "$WIFI_INTERFACE" get-networks
+        exit 1
+    fi
+
+    # Connect to WiFi network
+    log_info "Connecting to network '$WIFI_SSID'..."
+
+    # Create temporary file with password to avoid showing it in command line
+    TEMP_PASSFILE=$(mktemp)
+    echo "$WIFI_PASSWORD" > "$TEMP_PASSFILE"
+
+    # Connect using password file
+    if iwctl --passphrase="$WIFI_PASSWORD" station "$WIFI_INTERFACE" connect "$WIFI_SSID"; then
+        log_success "Connection established successfully"
+    else
+        log_error "Error connecting to WiFi network"
+        rm -f "$TEMP_PASSFILE"
+        exit 1
+    fi
+
+    # Clean up temporary file
+    rm -f "$TEMP_PASSFILE"
+
+    # Verify connectivity
+    log_info "Verifying connectivity..."
+    sleep 5
+
     if check_internet; then
         log_success "✓ Internet connection established successfully"
     else
-        log_error "No internet access. Check network configuration"
+        log_warn "Connection established but no internet access. Verifying..."
+        # Try to get IP via DHCP
+        dhcpcd "$WIFI_INTERFACE"
+        sleep 3
+        if check_internet; then
+            log_success "✓ Internet connection established successfully"
+        else
+            log_error "No internet access. Check network configuration"
+            exit 1
+        fi
+    fi
+else
+    log_step "WiFi setup skipped (using existing ethernet connection)"
+    # Verify that the existing connection has internet access
+    if check_internet; then
+        log_success "✓ Existing network connection verified"
+    else
+        log_error "Existing connection has no internet access"
         exit 1
     fi
+fi
+
+# Final connectivity verification
+if check_internet; then
+    log_success "✓ Internet connection confirmed"
+    log_success "✓ Keyboard configured in Spanish" 
+    log_success "✓ Terminal font configured"
+    log_success "✓ System ready to continue with installation"
+else
+    log_error "No internet access available"
+    exit 1
 fi
 
 # Initialize pacman keyring
