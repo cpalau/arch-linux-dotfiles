@@ -2,3 +2,4 @@
 # Desktop environment and applications from official repositories
 
 # Add desktop packages here
+# Format: - package_name

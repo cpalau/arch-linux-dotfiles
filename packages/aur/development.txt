@@ -4,4 +4,4 @@
 # Conventional Commits Tool
 # Python tool for creating conventional commits
 # https://github.com/commitizen-tools/commitizen
-python-commitizen
+- python-commitizen

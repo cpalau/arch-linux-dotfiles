@@ -2,3 +2,4 @@
 # Development packages from official Arch repositories
 
 # Add development tools here
+# Format: - package_name

@@ -39,15 +39,15 @@ arch-linux/
 │   └── .config/                   # My application configurations (to be created)
 ├── packages/
 │   ├── pacman/
-│   │   ├── base.txt               # Essential system packages (official repos)
-│   │   ├── development.txt        # Development tools (official repos) 
-│   │   ├── desktop.txt            # Desktop environment (official repos)
-│   │   └── optional.txt           # Additional packages (official repos)
+│   │   ├── base.txt               # Essential system packages (official repos) ✅
+│   │   ├── development.txt        # Development tools (official repos) ✅
+│   │   ├── desktop.txt            # Desktop environment (official repos) ✅
+│   │   └── optional.txt           # Additional packages (official repos) ✅
 │   └── aur/
-│       ├── base.txt               # Essential packages from AUR
-│       ├── development.txt        # Development tools from AUR
-│       ├── desktop.txt            # Desktop applications from AUR
-│       └── optional.txt           # Optional AUR packages
+│       ├── base.txt               # Essential packages from AUR ✅
+│       ├── development.txt        # Development tools from AUR ✅
+│       ├── desktop.txt            # Desktop applications from AUR ✅
+│       └── optional.txt           # Optional AUR packages ✅
 └── README.md                      # This documentation ✅
 ```
 
@@ -189,6 +189,23 @@ This structure ensures:
 - **Efficient installation** (batch install per package manager)
 - **Easy maintenance** and customization
 - **No ambiguity** about which package manager to use
+
+### Package List Format
+Each package file uses a standardized format for easy parsing:
+```bash
+# Comments start with #
+# Package entries start with - followed by package name
+- package_name
+- another_package
+```
+
+Example from `aur/development.txt`:
+```bash
+# Conventional Commits Tool
+# Python tool for creating conventional commits
+# https://github.com/commitizen-tools/commitizen
+- python-commitizen
+```
 
 ## 🔧 Available Commands
 

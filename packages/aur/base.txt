@@ -2,3 +2,4 @@
 # Essential packages from Arch User Repository
 
 # Add essential AUR packages here
+# Format: - package_name

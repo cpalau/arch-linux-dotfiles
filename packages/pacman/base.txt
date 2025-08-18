@@ -2,3 +2,4 @@
 # Essential system packages from official Arch repositories
 
 # Add essential packages here
+# Format: - package_name

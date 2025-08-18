@@ -2,3 +2,4 @@
 # Additional optional packages from Arch User Repository
 
 # Add optional AUR packages here
+# Format: - package_name
