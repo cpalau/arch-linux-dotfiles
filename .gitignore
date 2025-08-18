@@ -1,2 +1,5 @@
 # Ignorar todos los archivos .env en cualquier parte del proyecto
 *.env
+
+# Ignore sensitive archinstall configuration files
+config/archinstall_credentials.json
