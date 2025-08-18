@@ -3,3 +3,8 @@
 
 # Add development tools here
 # Format: - package_name
+
+# Polyglot tool version manager
+# Dev tools, env vars, task runner - replaces asdf, nvm, pyenv, etc.
+# https://github.com/jdx/mise
+- mise

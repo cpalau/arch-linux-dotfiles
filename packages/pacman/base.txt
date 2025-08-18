@@ -6,3 +6,18 @@
 
 # Modern text editor
 - neovim
+
+# Archive and compression tools
+# High compression archiver with multiple format support
+# https://github.com/p7zip-project/p7zip
+- p7zip
+
+# JSON processor and query tool
+# Command-line JSON processor for parsing and manipulating data
+# https://github.com/jqlang/jq
+- jq
+
+# Container platform
+# Open platform for developing, shipping, and running applications
+# https://github.com/docker/docker-ce
+- docker
