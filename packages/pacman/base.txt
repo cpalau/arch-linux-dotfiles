@@ -4,6 +4,16 @@
 # Add essential packages here
 # Format: - package_name
 
+# Version control system
+# Distributed version control system for tracking changes
+# https://git-scm.com/
+- git
+
+# Network downloader
+# Command-line utility for downloading files from web servers
+# https://www.gnu.org/software/wget/
+- wget
+
 # Modern text editor
 - neovim
 
