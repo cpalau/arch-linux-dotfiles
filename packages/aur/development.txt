@@ -10,3 +10,4 @@
 # The AI coding agent built for the terminal
 # https://github.com/sst/opencode
 - opencode-bin
+

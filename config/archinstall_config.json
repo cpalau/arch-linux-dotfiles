@@ -19,12 +19,14 @@
         "device_modifications": [
             {
                 "device": "/dev/sda",
+                "partition_table": "gpt",
                 "partitions": [
                     {
                         "btrfs": [],
                         "dev_path": null,
                         "flags": [
-                            "boot"
+                            "boot",
+                            "esp"
                         ],
                         "fs_type": "fat32",
                         "mount_options": [],
@@ -62,16 +64,16 @@
                                 "unit": "B",
                                 "value": 512
                             },
-                            "unit": "MB",
-                            "value": 5000
+                            "unit": "GiB",
+                            "value": 5
                         },
                         "start": {
                             "sector_size": {
                                 "unit": "B",
                                 "value": 512
                             },
-                            "unit": "B",
-                            "value": 1074790400
+                            "unit": "MiB",
+                            "value": 1025
                         },
                         "status": "create",
                         "type": "primary"
@@ -89,16 +91,16 @@
                                 "unit": "B",
                                 "value": 512
                             },
-                            "unit": "MB",
-                            "value": 2000
+                            "unit": "GiB",
+                            "value": 2
                         },
                         "start": {
                             "sector_size": {
                                 "unit": "B",
                                 "value": 512
                             },
-                            "unit": "B",
-                            "value": 6074790400
+                            "unit": "MiB",
+                            "value": 6145
                         },
                         "status": "create",
                         "type": "primary"
@@ -118,16 +120,16 @@
                                 "unit": "B",
                                 "value": 512
                             },
-                            "unit": "B",
-                            "value": 515144192
+                            "unit": "GiB",
+                            "value": 1
                         },
                         "start": {
                             "sector_size": {
                                 "unit": "B",
                                 "value": 512
                             },
-                            "unit": "B",
-                            "value": 8074790400
+                            "unit": "MiB",
+                            "value": 8193
                         },
                         "status": "create",
                         "type": "primary"
