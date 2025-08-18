@@ -215,15 +215,45 @@ else
     exit 1
 fi
 
-# TODO: Execute archinstall with configuration
-ARCHINSTALL_CONFIG="$PROJECT_ROOT/config/archinstall.json"
-if [ -f "$ARCHINSTALL_CONFIG" ]; then
+# Execute archinstall with configuration
+ARCHINSTALL_CONFIG="$PROJECT_ROOT/config/archinstall_config.json"
+ARCHINSTALL_CREDS="$PROJECT_ROOT/config/archinstall_credentials.json"
+
+if [ -f "$ARCHINSTALL_CONFIG" ] && [ -f "$ARCHINSTALL_CREDS" ]; then
     log_step "Executing archinstall with configuration..."
-    log_warn "archinstall execution will be implemented here"
-    # archinstall "$ARCHINSTALL_CONFIG"
+    log_info "Using configuration: $ARCHINSTALL_CONFIG"
+    log_info "Using credentials: $ARCHINSTALL_CREDS"
+    
+    # Verify archinstall is available
+    if ! command_exists archinstall; then
+        log_error "archinstall command not found. Make sure you are running from Arch Linux live environment"
+        exit 1
+    fi
+    
+    # Run archinstall with configuration and credentials
+    log_warn "Starting automated Arch Linux installation..."
+    log_warn "This will format disks according to the configuration!"
+    
+    # Give user a chance to abort
+    echo "Press Ctrl+C within 10 seconds to abort installation..."
+    sleep 10
+    
+    if archinstall --config "$ARCHINSTALL_CONFIG" --creds "$ARCHINSTALL_CREDS" --silent; then
+        log_success "✓ Arch Linux installation completed successfully!"
+        log_info "System will reboot automatically"
+        log_info "After reboot, run the post-installation script from the installed system"
+    else
+        log_error "Arch Linux installation failed"
+        exit 1
+    fi
 else
-    log_warn "archinstall.json not found in config directory"
-    log_info "You can run archinstall manually or create the configuration file"
+    if [ ! -f "$ARCHINSTALL_CONFIG" ]; then
+        log_warn "archinstall_config.json not found in config directory"
+    fi
+    if [ ! -f "$ARCHINSTALL_CREDS" ]; then
+        log_warn "archinstall_credentials.json not found in config directory" 
+    fi
+    log_info "Skipping automated installation. You can run archinstall manually"
 fi
 
 log_success "Pre-installation setup completed!"
