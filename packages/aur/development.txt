@@ -5,3 +5,8 @@
 # Python tool for creating conventional commits
 # https://github.com/commitizen-tools/commitizen
 - python-commitizen
+
+# AI Coding Agent
+# The AI coding agent built for the terminal
+# https://github.com/sst/opencode
+- opencode-bin
