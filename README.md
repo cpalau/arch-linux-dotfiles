@@ -26,7 +26,7 @@ arch-linux/
 │   ├── 01-post-install.sh         # My post-installation configuration (to be created)
 │   ├── 02-packages.sh             # My package installation ✅
 │   ├── 03-dotfiles.sh             # Dotfiles deployment using GNU Stow ✅
-│   ├── 04-services.sh             # My system services setup (to be created)
+│   ├── 04-services.sh             # System services configuration (Docker, SSH, CUPS) ✅
 │   └── utils/
 │       ├── colors.sh              # My color definitions ✅
 │       ├── logging.sh             # My logging functions ✅
@@ -319,6 +319,57 @@ dotfiles/.gnupg/      → /home/cristian/.gnupg/
 - **Project Location**: `/home/cristian/development/projects/dotfiles/`
 - **Write Permissions**: User must have write access to home directory
 
+## ⚙️ System Services Configuration
+
+The system services configuration script manages essential system services:
+
+### Services Configured (`scripts/04-services.sh`):
+
+#### Docker Service:
+- **Start and enable** Docker daemon
+- **Add user** to docker group for non-root access
+- **Activate group** membership immediately when possible
+- **Container management** without sudo privileges
+
+#### SSH Service:
+- **Start and enable** SSH daemon (sshd)
+- **Secure configuration** using hardened .sshd_config
+- **Custom port** 2222 for enhanced security
+- **Key-based authentication** only
+
+#### CUPS Service:
+- **Start and enable** printing system
+- **Printer management** and sharing capabilities
+- **Network printer** support
+
+### Features:
+- **Interactive confirmation** before making changes
+- **Comprehensive logging** of all operations
+- **Error handling** with rollback capabilities
+- **Service verification** after configuration
+- **Group membership** management for Docker
+
+### Usage:
+```bash
+# Run services configuration directly
+./scripts/04-services.sh
+
+# Or as part of post-installation setup
+./setup post-install
+```
+
+### What It Does:
+1. **Configure Docker**: Start service, enable autostart, add user to docker group
+2. **Configure SSH**: Start sshd with secure configuration from dotfiles
+3. **Configure CUPS**: Enable printing system for local and network printers
+4. **Verify Services**: Check that all services are running correctly
+5. **User Notification**: Inform about logout/login requirement for Docker group
+
+### Post-Configuration Notes:
+- **Docker group**: You may need to logout/login for Docker group changes to take effect
+- **SSH access**: Available on custom port 2222 as configured in .sshd_config  
+- **Printing**: CUPS web interface available at http://localhost:631
+
 ## 🔧 Available Commands
 
 ```bash
@@ -344,7 +395,7 @@ dotfiles/.gnupg/      → /home/cristian/.gnupg/
 - [ ] Post-installation system configuration
 - [x] Package installation scripts (02-packages.sh)
 - [x] Dotfiles management (03-dotfiles.sh)
-- [ ] Service configuration (04-services.sh)
+- [x] Service configuration (04-services.sh)
 - [ ] User environment setup
 
 ## 🤝 Contributing
