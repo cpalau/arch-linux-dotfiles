@@ -385,23 +385,10 @@ I've included a comprehensive Bash configuration for optimal shell experience:
 - **Custom Prompt**: User@host:path format with colors
 
 #### Key Environment Variables:
-- **`GNUPGHOME`**: `$HOME/dotfiles/.gnupg` (uses GnuPG from dotfiles)
+- **`GNUPGHOME`**: `$HOME/.gnupg` (standard GnuPG directory)
 - **`EDITOR`**: `vim` (default editor for git commits, etc.)
 - **`HISTSIZE`**: 10,000 commands in memory
 - **`HISTFILESIZE`**: 20,000 commands in history file
-
-#### Installation Instructions:
-```bash
-# Create symbolic link to use bashrc from dotfiles
-ln -sf "$(pwd)/dotfiles/.bashrc" ~/.bashrc
-
-# Reload configuration
-source ~/.bashrc
-
-# Verify GnuPG configuration is active
-echo $GNUPGHOME
-# Should output: /home/username/dotfiles/.gnupg
-```
 
 #### Sections Overview:
 1. **Environment Variables**: All environment variable definitions
