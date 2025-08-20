@@ -11,6 +11,7 @@ source "$(dirname "$0")/utils/helpers.sh"
 PROJECT_ROOT="/home/cristian/development/projects/arch-linux-dotfiles"
 DOTFILES_DIR="$PROJECT_ROOT/dotfiles"
 HOME_DIR="/home/cristian"
+SYSTEM_BACKUP_DIR="/tmp/dotfiles-system-backup-$(date +%Y%m%d-%H%M%S)"
 
 remove_existing_files() {
     log_info "Removing existing dotfiles that conflict with stow..."
@@ -26,6 +27,46 @@ remove_existing_files() {
         if [[ -e "$HOME_DIR/$file" ]] && [[ ! -L "$HOME_DIR/$file" ]]; then
             log_info "Removing existing $file"
             rm -rf "$HOME_DIR/$file"
+        fi
+    done
+}
+
+remove_system_conflicts() {
+    log_info "Removing existing system files that conflict with stow..."
+    
+    local system_files=(
+        "/etc/timeshift/timeshift.json"
+    )
+    
+    for file in "${system_files[@]}"; do
+        if [[ -e "$file" ]] && [[ ! -L "$file" ]]; then
+            log_info "Backing up and removing existing system file: $file"
+            
+            # Create backup directory if it doesn't exist
+            sudo mkdir -p "$SYSTEM_BACKUP_DIR$(dirname "$file")"
+            
+            # Backup the file
+            sudo cp "$file" "$SYSTEM_BACKUP_DIR$file" 2>/dev/null || true
+            
+            # Remove the original file
+            sudo rm -rf "$file"
+        fi
+    done
+}
+
+backup_system_files() {
+    log_info "Creating backup directory for system files: $SYSTEM_BACKUP_DIR"
+    sudo mkdir -p "$SYSTEM_BACKUP_DIR"
+    
+    local system_files=(
+        "/etc/timeshift/timeshift.json"
+    )
+    
+    for file in "${system_files[@]}"; do
+        if [[ -e "$file" ]]; then
+            log_info "Backing up system file: $file"
+            sudo mkdir -p "$SYSTEM_BACKUP_DIR$(dirname "$file")"
+            sudo cp "$file" "$SYSTEM_BACKUP_DIR$file" 2>/dev/null || true
         fi
     done
 }
@@ -52,11 +93,20 @@ verify_prerequisites() {
         exit 1
     fi
     
+    # Verify we can use sudo for system files
+    if ! sudo -n true 2>/dev/null; then
+        log_warning "⚠️  Script requires sudo privileges for system files"
+        log_info "Please run with sudo or ensure passwordless sudo is configured"
+        if ! confirm_action "Continue without system file deployment?"; then
+            exit 1
+        fi
+    fi
+    
     log_success "✅ Prerequisites verified"
 }
 
-deploy_dotfiles() {
-    log_info "Starting dotfiles deployment with GNU Stow..."
+deploy_user_dotfiles() {
+    log_info "Deploying user dotfiles with GNU Stow..."
     
     # Navigate to project root directory
     cd "$PROJECT_ROOT" || {
@@ -67,24 +117,73 @@ deploy_dotfiles() {
     # Remove existing conflicting files
     remove_existing_files
     
-    # Use stow to create symlinks for all dotfiles
-    log_info "Deploying dotfiles with GNU Stow..."
+    # Use stow to create symlinks for user dotfiles (exclude etc directory)
     log_info "Source: $DOTFILES_DIR"
     log_info "Target: $HOME_DIR"
     
-    if stow --verbose --target="$HOME_DIR" dotfiles; then
-        log_success "✅ Dotfiles deployed successfully!"
-        
-        # Set proper permissions for sensitive files
-        set_file_permissions
-        
-        # Reload configurations
-        reload_configurations
-        
+    if stow --verbose --target="$HOME_DIR" --ignore="etc" dotfiles; then
+        log_success "✅ User dotfiles deployed successfully!"
     else
-        log_error "❌ Failed to deploy dotfiles with GNU Stow"
+        log_error "❌ Failed to deploy user dotfiles with GNU Stow"
         exit 1
     fi
+}
+
+deploy_system_dotfiles() {
+    log_info "Deploying system dotfiles with GNU Stow..."
+    
+    # Check if etc directory exists
+    if [[ ! -d "$DOTFILES_DIR/etc" ]]; then
+        log_info "No system dotfiles found (etc directory doesn't exist)"
+        return 0
+    fi
+    
+    # Check if we have sudo privileges
+    if ! sudo -n true 2>/dev/null; then
+        log_warning "⚠️  Skipping system dotfiles deployment (no sudo privileges)"
+        return 0
+    fi
+    
+    # Navigate to dotfiles directory
+    cd "$DOTFILES_DIR" || {
+        log_error "Failed to navigate to dotfiles directory: $DOTFILES_DIR"
+        exit 1
+    }
+    
+    # Backup existing system files
+    backup_system_files
+    
+    # Remove conflicting system files
+    remove_system_conflicts
+    
+    # Use stow to create symlinks for system files
+    log_info "Deploying system files to /etc"
+    
+    if sudo stow --verbose --target="/etc" etc; then
+        log_success "✅ System dotfiles deployed successfully!"
+        
+        # Set proper permissions for system files
+        set_system_file_permissions
+        
+    else
+        log_error "❌ Failed to deploy system dotfiles with GNU Stow"
+        log_info "System backup created at: $SYSTEM_BACKUP_DIR"
+        exit 1
+    fi
+}
+
+deploy_dotfiles() {
+    log_info "Starting comprehensive dotfiles deployment..."
+    
+    # Deploy user dotfiles
+    deploy_user_dotfiles
+    
+    # Deploy system dotfiles
+    deploy_system_dotfiles
+    
+    # Set permissions and reload configurations
+    set_file_permissions
+    reload_configurations
 }
 
 set_file_permissions() {
@@ -121,6 +220,24 @@ set_file_permissions() {
     fi
 }
 
+set_system_file_permissions() {
+    log_info "Setting proper system file permissions..."
+    
+    # Timeshift config permissions
+    if [[ -f "/etc/timeshift/timeshift.json" ]]; then
+        sudo chmod 644 "/etc/timeshift/timeshift.json"
+        sudo chown root:root "/etc/timeshift/timeshift.json"
+        log_success "✅ Timeshift config permissions set"
+    fi
+    
+    # Set proper ownership for /etc/timeshift directory
+    if [[ -d "/etc/timeshift" ]]; then
+        sudo chown -R root:root "/etc/timeshift"
+        sudo chmod 755 "/etc/timeshift"
+        log_success "✅ Timeshift directory permissions set"
+    fi
+}
+
 reload_configurations() {
     log_info "Reloading configurations..."
     
@@ -141,7 +258,7 @@ reload_configurations() {
 verify_deployment() {
     log_info "Verifying dotfiles deployment..."
     
-    local files=(
+    local user_files=(
         ".bashrc"
         ".gitconfig"
         ".sshd_config"
@@ -149,11 +266,26 @@ verify_deployment() {
         ".gnupg/gpg-agent.conf"
     )
     
-    local success_count=0
-    local total_count=${#files[@]}
+    local system_files=(
+        "/etc/timeshift/timeshift.json"
+    )
     
-    for file in "${files[@]}"; do
+    local success_count=0
+    local total_count=$((${#user_files[@]} + ${#system_files[@]}))
+    
+    # Check user files
+    for file in "${user_files[@]}"; do
         if [[ -L "$HOME_DIR/$file" ]]; then
+            log_success "✅ $file → symlinked correctly"
+            ((success_count++))
+        else
+            log_warning "⚠️  $file → not found or not symlinked"
+        fi
+    done
+    
+    # Check system files
+    for file in "${system_files[@]}"; do
+        if [[ -L "$file" ]]; then
             log_success "✅ $file → symlinked correctly"
             ((success_count++))
         else
@@ -176,6 +308,11 @@ main() {
     log_info "Project root: $PROJECT_ROOT"
     log_info "Dotfiles directory: $DOTFILES_DIR"
     log_info "Home directory: $HOME_DIR"
+    log_info "System backup directory: $SYSTEM_BACKUP_DIR"
+    
+    log_info "This script will deploy:"
+    log_info "- User dotfiles (home directory)"
+    log_info "- System dotfiles (requires sudo for /etc)"
     
     # Confirmation prompt
     if ! confirm_action "Deploy dotfiles using GNU Stow?"; then
@@ -190,6 +327,9 @@ main() {
     
     log_success "🎉 Dotfiles deployment completed successfully!"
     log_info "All configuration files are now symlinked and active"
+    if [[ -d "$SYSTEM_BACKUP_DIR" ]]; then
+        log_info "System backup created at: $SYSTEM_BACKUP_DIR"
+    fi
     log_info "You may need to restart your terminal to see all changes"
 }
 

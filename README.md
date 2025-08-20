@@ -39,6 +39,9 @@ arch-linux/
 │   ├── .gnupg/                    # GnuPG configuration directory ✅
 │   │   ├── gpg.conf               # GnuPG main configuration ✅
 │   │   └── gpg-agent.conf         # GPG agent configuration ✅
+│   ├── etc/                       # System configuration files (requires root) ✅
+│   │   └── timeshift/
+│   │       └── timeshift.json     # Timeshift backup configuration ✅
 │   └── .config/                   # My application configurations (to be created)
 ├── private/                        # Sensitive files (NOT committed to git) ✅
 │   ├── ssh/                       # SSH keys and configuration
@@ -269,16 +272,24 @@ Example from `aur/development.txt`:
 The dotfiles deployment system uses **GNU Stow** for automatic symlink management:
 
 ### Files Managed:
+
+#### User Configuration Files:
 - **`.bashrc`**: Complete Bash configuration with environment variables ✅
 - **`.gitconfig`**: Git configuration with PGP signing ✅
 - **`.sshd_config`**: Hardened SSH server configuration ✅
 - **`.gnupg/`**: Complete GnuPG configuration directory ✅
 
+#### System Configuration Files:
+- **`etc/timeshift/timeshift.json`**: Timeshift backup system configuration ✅
+
 ### Deployment Process (`scripts/03-dotfiles.sh`):
 
 #### Features:
+- **Dual Deployment**: Separate handling of user and system configuration files
 - **GNU Stow Integration**: Automatic symlink creation and management
 - **Safe Deployment**: Removes existing conflicting files before deployment
+- **System Backup**: Automatic backup of existing system files before replacement
+- **Sudo Integration**: Handles system files that require root privileges
 - **Permission Management**: Sets appropriate permissions for sensitive files
 - **Configuration Reload**: Automatically reloads Bash and GPG agent
 - **Verification**: Confirms all symlinks were created successfully
@@ -286,8 +297,10 @@ The dotfiles deployment system uses **GNU Stow** for automatic symlink managemen
 #### Security Features:
 - **Selective Removal**: Only removes specific conflicting files (not wildcards)
 - **Interactive Confirmation**: Asks before making changes
-- **Proper Permissions**: Sets 700/600 for GnuPG, 644 for other configs
+- **System File Backup**: Creates timestamped backups in `/tmp` before system changes
+- **Proper Permissions**: Sets 700/600 for GnuPG, 644 for configs, root:root for system files
 - **Path Validation**: Verifies all directories exist before proceeding
+- **Sudo Verification**: Checks for proper privileges before attempting system changes
 
 #### Usage:
 ```bash
@@ -299,14 +312,17 @@ The dotfiles deployment system uses **GNU Stow** for automatic symlink managemen
 ```
 
 #### What It Does:
-1. **Verifies Prerequisites**: Checks GNU Stow installation and directories
-2. **Removes Conflicts**: Safely removes existing files that would conflict
-3. **Creates Symlinks**: Uses `stow --target=/home/cristian dotfiles`
-4. **Sets Permissions**: Configures proper file permissions
-5. **Reloads Configurations**: Updates Bash environment and GPG agent
-6. **Verifies Deployment**: Confirms all symlinks were created successfully
+1. **Verifies Prerequisites**: Checks GNU Stow installation, directories, and sudo privileges
+2. **Removes Conflicts**: Safely removes existing files that would conflict with stow
+3. **Creates User Symlinks**: Uses `stow --target=/home/cristian --ignore=etc dotfiles`
+4. **Creates System Symlinks**: Uses `sudo stow --target=/etc dotfiles/etc` (with backup)
+5. **Sets Permissions**: Configures proper file permissions for both user and system files
+6. **Reloads Configurations**: Updates Bash environment and GPG agent
+7. **Verifies Deployment**: Confirms all symlinks were created successfully
 
 #### File Mapping:
+
+**User Files:**
 ```
 dotfiles/.bashrc      → /home/cristian/.bashrc
 dotfiles/.gitconfig   → /home/cristian/.gitconfig  
@@ -314,10 +330,40 @@ dotfiles/.sshd_config → /home/cristian/.sshd_config
 dotfiles/.gnupg/      → /home/cristian/.gnupg/
 ```
 
+**System Files:**
+```
+dotfiles/etc/timeshift/timeshift.json → /etc/timeshift/timeshift.json
+```
+
 ### Requirements:
 - **GNU Stow**: Must be installed (`pacman -S stow`)
-- **Project Location**: `/home/cristian/development/projects/dotfiles/`
+- **Project Location**: `/home/cristian/development/projects/arch-linux-dotfiles/`
 - **Write Permissions**: User must have write access to home directory
+- **Sudo Privileges**: Required for system file deployment (optional, can skip with warning)
+
+### System Files Configuration:
+
+#### Timeshift Backup Configuration:
+The `dotfiles/etc/timeshift/timeshift.json` provides a comprehensive backup strategy:
+
+**Features:**
+- **Monthly Snapshots**: Automated monthly backups (keeps 2)
+- **Smart Exclusions**: Excludes cache, temporary, and system directories
+- **BTRFS Ready**: Compatible with both ext4 and BTRFS filesystems
+- **Email Control**: Prevents spam from cron backup notifications
+
+**Key Exclusions:**
+```
+/home/*/.cache/**         # User cache directories
+/home/*/.thumbnails/**    # Image thumbnails
+/home/*/Downloads/**      # Download directories
+/var/cache/**             # System cache
+/var/log/**              # System logs  
+/tmp/** and /var/tmp/**  # Temporary files
+```
+
+**Installation:**
+The configuration is automatically deployed to `/etc/timeshift/timeshift.json` with proper root permissions when running the dotfiles script with sudo privileges.
 
 ## ⚙️ System Services Configuration
 
