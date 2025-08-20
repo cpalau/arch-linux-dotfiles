@@ -77,6 +77,12 @@
 # https://www.gnupg.org/
 - gnupg
 
+# Pinentry
+# Collection of passphrase entry dialogs for GnuPG
+# Required for secure passphrase input in various environments (GTK, Qt, console)
+# https://www.gnupg.org/related_software/pinentry/
+- pinentry
+
 # OpenSSH
 # Secure Shell protocol implementation for secure remote access
 # https://www.openssh.com/
