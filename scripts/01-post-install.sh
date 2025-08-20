@@ -165,6 +165,24 @@ ensure_git_available() {
     fi
 }
 
+# Function to ensure Timeshift is available
+ensure_timeshift_available() {
+    log_step "Checking Timeshift availability..."
+    
+    if command -v timeshift >/dev/null 2>&1; then
+        log_success "Timeshift is already installed"
+        return 0
+    fi
+    
+    log_info "Timeshift not found, installing..."
+    if pacman -S --noconfirm timeshift; then
+        log_success "Timeshift installed successfully"
+    else
+        log_error "Failed to install Timeshift"
+        exit 1
+    fi
+}
+
 setup_git_repositories() {
     log_step "Setting up Git repositories..."
     
@@ -206,16 +224,6 @@ create_initial_timeshift_backup() {
     local BACKUP_DEVICE="/dev/sda1"
     local BACKUP_MOUNT_POINT="/mnt/backup"
     local BACKUP_DIR="$BACKUP_MOUNT_POINT/backups"
-    
-    # Check if timeshift is available
-    if ! command -v timeshift >/dev/null 2>&1; then
-        log_error "Timeshift not found. Installing..."
-        if ! pacman -S --noconfirm timeshift; then
-            log_error "Failed to install Timeshift"
-            log_info "Continuing without initial backup"
-            return 1
-        fi
-    fi
     
     # Check if backup device exists
     if [ ! -b "$BACKUP_DEVICE" ]; then
@@ -273,6 +281,9 @@ create_initial_timeshift_backup() {
 }
 
 log_step "Starting Arch Linux post-installation setup..."
+
+# Ensure Timeshift is available before creating backup
+ensure_timeshift_available
 
 # Create initial system backup as first step
 create_initial_timeshift_backup
