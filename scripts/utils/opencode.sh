@@ -17,25 +17,25 @@ install_yay() {
         exit 1
     }
     
-    # Clone yay repository
-    git clone https://aur.archlinux.org/yay.git || {
-        error "Failed to clone yay repository"
+    # Clone yay-bin repository
+    git clone https://aur.archlinux.org/yay-bin.git || {
+        error "Failed to clone yay-bin repository"
         exit 1
     }
     
-    # Build and install yay
-    cd yay
+    # Build and install yay-bin
+    cd yay-bin
     makepkg -si --noconfirm || {
-        error "Failed to build and install yay"
+        error "Failed to build and install yay-bin"
         cd ..
-        rm -rf yay
+        rm -rf yay-bin
         exit 1
     }
     
     cd ..
     
-    # Clean up yay directory
-    rm -rf yay
+    # Clean up yay-bin directory
+    rm -rf yay-bin
     success "yay installed successfully"
 }
 
