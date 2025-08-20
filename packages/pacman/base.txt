@@ -292,6 +292,11 @@
 # https://facebook.github.io/zstd/
 - zstd
 
+# GNU dotfiles manager
+# Symlink farm manager for maintaining configuration files across environments
+# https://www.gnu.org/software/stow/
+- stow
+
 # Ghostscript
 # Interpreter for PostScript and PDF files
 # https://www.ghostscript.com/
