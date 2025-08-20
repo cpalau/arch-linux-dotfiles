@@ -1,6 +1,17 @@
 #!/bin/bash
 
-# OpenCode installer script - Installs yay and opencode-bin from AUR
+# OpenCode installer script - Installs yay, tmux and opencode-bin from AUR
+#
+# Tmux Usage:
+# - Start new session: tmux
+# - Split horizontally: Ctrl+b then "
+# - Split vertically: Ctrl+b then %
+# - Switch panes: Ctrl+b then arrow keys
+# - Create new window: Ctrl+b then c
+# - Switch windows: Ctrl+b then number
+# - Detach session: Ctrl+b then d
+# - Attach session: tmux attach
+# - List sessions: tmux ls
 
 # Source utility functions
 source "$(dirname "$0")/helpers.sh"
@@ -12,7 +23,7 @@ install_yay() {
     info "Installing yay AUR helper..."
     
     # Install prerequisites
-    sudo pacman -S --needed git base-devel || {
+    sudo pacman -S --needed git base-devel tmux || {
         error "Failed to install prerequisites"
         exit 1
     }
@@ -73,6 +84,13 @@ main() {
     
     success "OpenCode installation completed!"
     info "You can now use 'opencode' command"
+    info "Tmux is also installed for terminal multiplexing"
+    info "Basic tmux commands:"
+    info "  - Start: tmux"
+    info "  - Split horizontal: Ctrl+b then \""
+    info "  - Split vertical: Ctrl+b then %"
+    info "  - Switch panes: Ctrl+b then arrow keys"
+    info "  - Detach: Ctrl+b then d"
 }
 
 # Run main function
