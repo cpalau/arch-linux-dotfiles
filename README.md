@@ -25,7 +25,7 @@ arch-linux/
 │   ├── 00-pre-install.sh          # Network detection + WiFi/ethernet setup + archinstall execution ✅
 │   ├── 01-post-install.sh         # My post-installation configuration (to be created)
 │   ├── 02-packages.sh             # My package installation ✅
-│   ├── 03-dotfiles.sh             # My dotfiles deployment (to be created)
+│   ├── 03-dotfiles.sh             # Dotfiles deployment using GNU Stow ✅
 │   ├── 04-services.sh             # My system services setup (to be created)
 │   └── utils/
 │       ├── colors.sh              # My color definitions ✅
@@ -264,6 +264,61 @@ Example from `aur/development.txt`:
 - python-commitizen
 ```
 
+## 📂 Dotfiles Management
+
+The dotfiles deployment system uses **GNU Stow** for automatic symlink management:
+
+### Files Managed:
+- **`.bashrc`**: Complete Bash configuration with environment variables ✅
+- **`.gitconfig`**: Git configuration with PGP signing ✅
+- **`.sshd_config`**: Hardened SSH server configuration ✅
+- **`.gnupg/`**: Complete GnuPG configuration directory ✅
+
+### Deployment Process (`scripts/03-dotfiles.sh`):
+
+#### Features:
+- **GNU Stow Integration**: Automatic symlink creation and management
+- **Safe Deployment**: Removes existing conflicting files before deployment
+- **Permission Management**: Sets appropriate permissions for sensitive files
+- **Configuration Reload**: Automatically reloads Bash and GPG agent
+- **Verification**: Confirms all symlinks were created successfully
+
+#### Security Features:
+- **Selective Removal**: Only removes specific conflicting files (not wildcards)
+- **Interactive Confirmation**: Asks before making changes
+- **Proper Permissions**: Sets 700/600 for GnuPG, 644 for other configs
+- **Path Validation**: Verifies all directories exist before proceeding
+
+#### Usage:
+```bash
+# Run dotfiles deployment directly
+./scripts/03-dotfiles.sh
+
+# Or as part of post-installation setup
+./setup post-install
+```
+
+#### What It Does:
+1. **Verifies Prerequisites**: Checks GNU Stow installation and directories
+2. **Removes Conflicts**: Safely removes existing files that would conflict
+3. **Creates Symlinks**: Uses `stow --target=/home/cristian dotfiles`
+4. **Sets Permissions**: Configures proper file permissions
+5. **Reloads Configurations**: Updates Bash environment and GPG agent
+6. **Verifies Deployment**: Confirms all symlinks were created successfully
+
+#### File Mapping:
+```
+dotfiles/.bashrc      → /home/cristian/.bashrc
+dotfiles/.gitconfig   → /home/cristian/.gitconfig  
+dotfiles/.sshd_config → /home/cristian/.sshd_config
+dotfiles/.gnupg/      → /home/cristian/.gnupg/
+```
+
+### Requirements:
+- **GNU Stow**: Must be installed (`pacman -S stow`)
+- **Project Location**: `/home/cristian/development/projects/dotfiles/`
+- **Write Permissions**: User must have write access to home directory
+
 ## 🔧 Available Commands
 
 ```bash
@@ -288,7 +343,7 @@ Example from `aur/development.txt`:
 ### To Do 📋
 - [ ] Post-installation system configuration
 - [x] Package installation scripts (02-packages.sh)
-- [ ] Dotfiles management (03-dotfiles.sh)
+- [x] Dotfiles management (03-dotfiles.sh)
 - [ ] Service configuration (04-services.sh)
 - [ ] User environment setup
 
