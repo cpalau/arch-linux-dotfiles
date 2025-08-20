@@ -23,15 +23,15 @@ arch-linux/
 │   └── archinstall_credentials.json # Archinstall user credentials ✅
 ├── scripts/
 │   ├── 00-pre-install.sh          # Network detection + WiFi/ethernet setup + archinstall execution ✅
-│   ├── 01-initial-backup.sh       # Initial system backup using Timeshift ✅
-│   ├── 02-post-install.sh         # Post-installation configuration ✅
-│   ├── 03-packages.sh             # Package installation ✅
-│   ├── 04-dotfiles.sh             # Dotfiles deployment using GNU Stow ✅
-│   ├── 05-services.sh             # System services configuration (Docker, SSH, CUPS) ✅
+│   ├── 01-post-install.sh         # Post-installation configuration ✅
+│   ├── 02-packages.sh             # Package installation ✅
+│   ├── 03-dotfiles.sh             # Dotfiles deployment using GNU Stow ✅
+│   ├── 04-services.sh             # System services configuration (Docker, SSH, CUPS) ✅
 │   └── utils/
-│       ├── colors.sh              # My color definitions ✅
-│       ├── logging.sh             # My logging functions ✅
-│       └── helpers.sh             # My common helper functions ✅
+│       ├── colors.sh              # Color definitions ✅
+│       ├── logging.sh             # Logging functions ✅
+│       ├── helpers.sh             # Common helper functions ✅
+│       └── backup.sh              # Automated backup utility using Timeshift ✅
 ├── dotfiles/
 │   ├── .bashrc                    # Bash shell configuration with environment variables ✅
 │   ├── .vimrc                     # My vim configuration (to be created)
@@ -119,11 +119,15 @@ After rebooting into the new Arch Linux system:
 ```
 
 This will:
-- **Create initial system backup** using Timeshift with rsync backend
 - Configure my system settings
 - Install my additional packages
 - Deploy my dotfiles
 - Setup my system services
+
+**Note**: For initial system backup, you can use the backup utility:
+```bash
+./scripts/utils/backup.sh initial "Initial post-install backup"
+```
 
 ### Full Setup (Complete Process)
 
@@ -153,44 +157,56 @@ The setup script includes intelligent network detection that prioritizes etherne
 4. **Fallback Mode**: If ethernet fails or is unavailable, proceed with WiFi configuration
 5. **Final Verification**: All connections are tested against archlinux.org before proceeding
 
-## 💾 Initial System Backup
+## 💾 System Backup Utility
 
-The system includes an automated backup solution using Timeshift with rsync backend:
+The system includes a flexible automated backup utility using Timeshift with rsync backend:
 
-### Backup Script (`scripts/01-initial-backup.sh`):
+### Backup Utility (`scripts/utils/backup.sh`):
 
 #### Features:
 - **Timeshift Integration**: Uses Timeshift for professional system snapshots
 - **Rsync Backend**: Efficient incremental backups using rsync
 - **Custom Location**: Backups stored on `/dev/sda1/backups`
+- **Timestamped Backups**: Automatic timestamp generation for unique backup names
+- **Flexible Usage**: Supports different backup types (initial, scheduled, manual, automatic)
+- **Custom Comments**: Ability to add custom descriptions to backups
 - **Automatic Mount**: Handles mounting and device verification
 - **Error Handling**: Graceful fallback if backup device unavailable
 - **Clean Installation**: Automatically installs Timeshift if not present
 
+#### Usage:
+```bash
+# Basic automatic backup
+./scripts/utils/backup.sh
+
+# Initial system backup
+./scripts/utils/backup.sh initial "Initial post-install backup"
+
+# Manual backup with custom comment
+./scripts/utils/backup.sh manual "Before system update"
+
+# Scheduled backup (for cron jobs)
+./scripts/utils/backup.sh scheduled
+
+# Show help
+./scripts/utils/backup.sh --help
+```
+
 #### What It Does:
 1. **Install Timeshift**: Ensures Timeshift is available via pacman
 2. **Device Verification**: Checks if `/dev/sda1` backup device exists
-3. **Mount Management**: Mounts backup device to `/mnt/backup`
+3. **Mount Management**: Mounts backup device to `/mnt/backup` (if not already mounted)
 4. **Configure Timeshift**: Sets up rsync mode with custom backup location
-5. **Create Snapshot**: Creates initial system backup with timestamp
+5. **Create Timestamped Snapshot**: Creates system backup with unique timestamp
 6. **Show Information**: Displays backup size and snapshot details
 7. **Keep Device Mounted**: Leaves backup device mounted for future use
 
-#### Usage:
-```bash
-# Run backup script directly
-./scripts/01-initial-backup.sh
-
-# Or as part of post-installation setup
-./setup post-install
-```
-
 #### Backup Details:
 - **Storage Location**: `/dev/sda1/backups/timeshift/`
-- **Backup Type**: Complete system snapshot (excluding standard exclusions)
-- **Format**: Timeshift snapshots with metadata
-- **Incremental**: Future backups will be incremental for faster operation
-- **Device Management**: Backup device remains mounted at `/mnt/backup`
+- **Backup Format**: Timeshift snapshots with metadata and timestamps
+- **Naming Convention**: Includes backup type, comment, and timestamp (YYYYMMDD_HHMMSS)
+- **Incremental**: Future backups are incremental for faster operation
+- **Device Management**: Smart mounting - only mounts if not already mounted
 
 #### Requirements:
 - **Backup Device**: `/dev/sda1` must be available and mountable
@@ -199,7 +215,7 @@ The system includes an automated backup solution using Timeshift with rsync back
 - **Root Privileges**: Required for mounting and system backup
 
 #### Backup Process:
-The backup process typically takes 15-30 minutes depending on system size and creates a complete snapshot before any configuration changes are made, ensuring you can restore to a clean state if needed.
+The backup process typically takes 15-30 minutes depending on system size. Each backup is timestamped and can include custom comments for easy identification. The utility is designed for both manual use and automation (cron jobs).
 
 ## ⚙️ Configuration Files
 
@@ -332,7 +348,7 @@ The dotfiles deployment system uses **GNU Stow** for automatic symlink managemen
 #### System Configuration Files:
 - **`etc/timeshift/timeshift.json`**: Timeshift backup system configuration ✅
 
-### Deployment Process (`scripts/04-dotfiles.sh`):
+### Deployment Process (`scripts/03-dotfiles.sh`):
 
 #### Features:
 - **Dual Deployment**: Separate handling of user and system configuration files
@@ -355,7 +371,7 @@ The dotfiles deployment system uses **GNU Stow** for automatic symlink managemen
 #### Usage:
 ```bash
 # Run dotfiles deployment directly
-./scripts/04-dotfiles.sh
+./scripts/03-dotfiles.sh
 
 # Or as part of post-installation setup
 ./setup post-install
@@ -419,7 +435,7 @@ The configuration is automatically deployed to `/etc/timeshift/timeshift.json` w
 
 The system services configuration script manages essential system services:
 
-### Services Configured (`scripts/05-services.sh`):
+### Services Configured (`scripts/04-services.sh`):
 
 #### Docker Service:
 - **Start and enable** Docker daemon
@@ -448,7 +464,7 @@ The system services configuration script manages essential system services:
 ### Usage:
 ```bash
 # Run services configuration directly
-./scripts/05-services.sh
+./scripts/04-services.sh
 
 # Or as part of post-installation setup
 ./setup post-install
@@ -488,11 +504,11 @@ The system services configuration script manages essential system services:
 - [x] Automated installation process
 
 ### To Do 📋
-- [x] Initial system backup (01-initial-backup.sh)
-- [x] Post-installation system configuration (02-post-install.sh)
-- [x] Package installation scripts (03-packages.sh)
-- [x] Dotfiles management (04-dotfiles.sh)
-- [x] Service configuration (05-services.sh)
+- [x] Backup utility (scripts/utils/backup.sh)
+- [x] Post-installation system configuration (01-post-install.sh)
+- [x] Package installation scripts (02-packages.sh)
+- [x] Dotfiles management (03-dotfiles.sh)
+- [x] Service configuration (04-services.sh)
 - [ ] User environment setup
 
 ## 🤝 Contributing
