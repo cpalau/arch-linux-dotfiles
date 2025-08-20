@@ -1,4 +1,4 @@
-# Ignorar todos los archivos .env en cualquier parte del proyecto
+# Ignore all .env files anywhere in the project
 *.env
 
 # Ignore sensitive archinstall configuration files
