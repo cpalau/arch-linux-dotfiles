@@ -32,7 +32,7 @@ arch-linux/
 │       ├── logging.sh             # My logging functions ✅
 │       └── helpers.sh             # My common helper functions ✅
 ├── dotfiles/
-│   ├── .bashrc                    # My bash configuration (to be created)
+│   ├── .bashrc                    # Bash shell configuration with environment variables ✅
 │   ├── .vimrc                     # My vim configuration (to be created)
 │   ├── .gitconfig                 # My git configuration ✅
 │   ├── .sshd_config               # SSH server configuration ✅
@@ -367,6 +367,48 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 - Change the port number (2222) to your preferred custom port
 - Ensure you have SSH keys set up before disabling password authentication
 - Test the configuration from another terminal before closing your current session
+
+### Bash Shell Configuration
+
+I've included a comprehensive Bash configuration for optimal shell experience:
+
+#### Files Included:
+- **`dotfiles/.bashrc`**: Complete Bash configuration with documented sections ✅
+
+#### Features Implemented:
+- **Environment Variables**: Centralized section for all environment variable definitions
+- **GnuPG Integration**: `GNUPGHOME` points to dotfiles GnuPG configuration
+- **Enhanced History**: Large history size with duplicate removal
+- **Colored Output**: Smart color detection for ls, grep, and other commands
+- **Safety Aliases**: Interactive confirmation for rm, cp, mv operations
+- **Completion Support**: Bash completion for better command-line experience
+- **Custom Prompt**: User@host:path format with colors
+
+#### Key Environment Variables:
+- **`GNUPGHOME`**: `$HOME/dotfiles/.gnupg` (uses GnuPG from dotfiles)
+- **`EDITOR`**: `vim` (default editor for git commits, etc.)
+- **`HISTSIZE`**: 10,000 commands in memory
+- **`HISTFILESIZE`**: 20,000 commands in history file
+
+#### Installation Instructions:
+```bash
+# Create symbolic link to use bashrc from dotfiles
+ln -sf "$(pwd)/dotfiles/.bashrc" ~/.bashrc
+
+# Reload configuration
+source ~/.bashrc
+
+# Verify GnuPG configuration is active
+echo $GNUPGHOME
+# Should output: /home/username/dotfiles/.gnupg
+```
+
+#### Sections Overview:
+1. **Environment Variables**: All environment variable definitions
+2. **Shell Options**: Bash behavior and history settings
+3. **Aliases**: Command shortcuts and safety aliases
+4. **Completion**: Programmable completion features
+5. **Prompt Configuration**: Custom PS1 prompt styling
 
 ### GnuPG Configuration
 
