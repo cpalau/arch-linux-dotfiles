@@ -35,6 +35,8 @@ arch-linux/
 │   ├── .bashrc                    # My bash configuration (to be created)
 │   ├── .vimrc                     # My vim configuration (to be created)
 │   ├── .gitconfig                 # My git configuration ✅
+│   ├── sshd_config                # SSH server configuration ✅
+│   ├── ssh_banner                 # SSH login banner ✅
 │   └── .config/                   # My application configurations (to be created)
 ├── private/                        # Sensitive files (NOT committed to git) ✅
 │   ├── ssh/                       # SSH keys and configuration
@@ -321,6 +323,53 @@ refactor: improve network detection logic
 - My system uses modular scripts for easy maintenance and customization
 
 ## 🔒 Security
+
+### SSH Configuration
+
+I've included a hardened SSH server configuration for secure remote access:
+
+#### Files Included:
+- **`dotfiles/sshd_config`**: Secure SSH server configuration for Arch Linux ✅
+- **`dotfiles/ssh_banner`**: Warning banner displayed before login ✅
+
+#### Security Features Implemented:
+- **No Root Login**: Root access via SSH completely disabled
+- **SSH Key Authentication Only**: Password authentication disabled
+- **Custom Port**: Uses port 2222 instead of default 22
+- **Modern Cryptography**: Only secure algorithms allowed
+- **Connection Limits**: Rate limiting and timeout protection
+- **User Access Control**: Only specific users allowed
+- **Comprehensive Logging**: Detailed audit logging enabled
+- **Forwarding Disabled**: X11 and TCP forwarding blocked
+- **Legal Banner**: Warning message for unauthorized access
+
+#### Installation Instructions:
+```bash
+# Copy SSH configuration files
+sudo cp dotfiles/sshd_config /etc/ssh/sshd_config
+sudo cp dotfiles/ssh_banner /etc/ssh/banner
+
+# Set proper permissions
+sudo chmod 644 /etc/ssh/sshd_config /etc/ssh/banner
+
+# Test configuration before applying
+sudo sshd -t
+
+# Apply configuration
+sudo systemctl restart sshd
+sudo systemctl enable sshd
+
+# Generate SSH keys if needed
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+
+#### Important Notes:
+- Replace 'cristian' in `AllowUsers` with your actual username
+- Change the port number (2222) to your preferred custom port
+- Ensure you have SSH keys set up before disabling password authentication
+- Test the configuration from another terminal before closing your current session
+
+### General Security Practices
 
 - My WiFi credentials are stored locally and never transmitted
 - Temporary password files are automatically cleaned up
