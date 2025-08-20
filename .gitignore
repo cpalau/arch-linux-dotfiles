@@ -3,3 +3,7 @@
 
 # Ignore sensitive archinstall configuration files
 config/archinstall_credentials.json
+
+# Private/sensitive files directory
+private/
+!private/README.md
