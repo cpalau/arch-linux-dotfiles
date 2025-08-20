@@ -61,12 +61,28 @@ run_pre_install() {
 
 run_post_install() {
     log_step "Starting post-installation phase..."
-    log_warn "Post-installation scripts are not yet implemented."
-    log_info "Available scripts to implement:"
-    log_info "  - 01-post-install.sh (system configuration)"
-    log_info "  - 02-packages.sh (package installation)"
-    log_info "  - 03-dotfiles.sh (dotfiles deployment)"
-    log_info "  - 04-services.sh (service configuration)"
+    
+    # Check if we're running on the installed system (not live USB)
+    if [ ! -d "/home" ] || [ "$(ls -A /home)" = "" ]; then
+        log_error "Post-installation must be run from the installed Arch Linux system"
+        log_info "Boot into your installed system and run this script again"
+        exit 1
+    fi
+    
+    # Run 01-post-install.sh (directory structure + git repositories)
+    if [ -f "$SCRIPT_DIR/scripts/01-post-install.sh" ]; then
+        log_info "Running system configuration and setup..."
+        bash "$SCRIPT_DIR/scripts/01-post-install.sh"
+    else
+        log_error "Post-installation script not found: $SCRIPT_DIR/scripts/01-post-install.sh"
+        exit 1
+    fi
+    
+    log_success "Post-installation completed successfully!"
+    log_info "Next steps available (not yet implemented):"
+    log_info "  - Package installation"
+    log_info "  - Dotfiles deployment"
+    log_info "  - Service configuration"
 }
 
 run_full_setup() {
