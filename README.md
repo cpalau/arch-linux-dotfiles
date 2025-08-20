@@ -34,7 +34,7 @@ arch-linux/
 ├── dotfiles/
 │   ├── .bashrc                    # My bash configuration (to be created)
 │   ├── .vimrc                     # My vim configuration (to be created)
-│   ├── .gitconfig                 # My git configuration (to be created)
+│   ├── .gitconfig                 # My git configuration ✅
 │   └── .config/                   # My application configurations (to be created)
 ├── packages/
 │   ├── pacman/
