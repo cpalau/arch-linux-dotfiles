@@ -57,7 +57,7 @@ log_step "Increasing console font size for better visibility..."
 # Available large fonts: ter-v32b, ter-v28b, ter-v24b, ter-v20b, ter-v16b
 # You can also try: lat9w-16, lat9w-14, lat9w-12
 # To test different fonts manually: setfont ter-v32b
-LARGE_FONT="ter-v32b"
+LARGE_FONT="ter-v16b"
 
 if setfont "$LARGE_FONT" 2>/dev/null; then
     log_success "Font size increased to $LARGE_FONT"
@@ -203,15 +203,6 @@ if pacman -Sy; then
     log_success "Package sources refreshed successfully"
 else
     log_error "Error refreshing package sources"
-    exit 1
-fi
-
-# Install git and wget without prompting
-log_step "Installing git and wget..."
-if pacman -S --noconfirm git wget; then
-    log_success "git and wget installed successfully"
-else
-    log_error "Error installing git and wget"
     exit 1
 fi
 
