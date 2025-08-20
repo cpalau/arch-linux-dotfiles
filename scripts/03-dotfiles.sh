@@ -8,7 +8,7 @@ source "$(dirname "$0")/utils/logging.sh"
 source "$(dirname "$0")/utils/helpers.sh"
 
 # Configuration
-PROJECT_ROOT="/home/cristian/development/projects/dotfiles"
+PROJECT_ROOT="/home/cristian/development/projects/arch-linux-dotfiles"
 DOTFILES_DIR="$PROJECT_ROOT/dotfiles"
 HOME_DIR="/home/cristian"
 
