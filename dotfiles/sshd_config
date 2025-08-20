@@ -1,0 +1,122 @@
+# SSH Server Configuration for Arch Linux
+# File location: /etc/ssh/sshd_config
+# 
+# This configuration prioritizes security by:
+# - Disabling root login
+# - Requiring SSH key authentication only
+# - Using secure cryptographic algorithms
+# - Implementing connection limits and timeouts
+#
+# After copying this file, restart SSH service:
+# sudo systemctl restart sshd
+# sudo systemctl enable sshd
+
+# Network Configuration
+# Change default port to reduce automated attacks
+Port 2222
+
+# Use SSH protocol version 2 only (more secure)
+Protocol 2
+
+# Listen on all IPv4 addresses
+AddressFamily inet
+ListenAddress 0.0.0.0
+
+# Host Key Configuration (Arch Linux default paths)
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+# Cryptographic Configuration
+# Use only modern, secure algorithms
+KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-512
+
+# Authentication Configuration
+# SECURITY: Disable root login completely
+PermitRootLogin no
+
+# Enable public key authentication
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+
+# SECURITY: Disable password authentication - SSH keys only
+PasswordAuthentication no
+PermitEmptyPasswords no
+ChallengeResponseAuthentication no
+
+# Use PAM for account management (Arch Linux standard)
+UsePAM yes
+
+# Connection Limits and Timeouts
+# Grace period for login (30 seconds)
+LoginGraceTime 30
+
+# Maximum authentication attempts before disconnection
+MaxAuthTries 3
+
+# Maximum concurrent sessions per connection
+MaxSessions 2
+
+# Connection rate limiting (max 3 unauthenticated connections)
+MaxStartups 3:30:10
+
+# Client keepalive configuration
+# Send keepalive every 5 minutes, disconnect after 2 failed attempts
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+# Security Features - Disable Forwarding
+# Disable TCP forwarding to prevent tunneling
+AllowTcpForwarding no
+AllowStreamLocalForwarding no
+GatewayPorts no
+PermitTunnel no
+
+# Disable X11 forwarding (security risk)
+X11Forwarding no
+
+# User Access Control
+# Only allow specific user (replace 'cristian' with your username)
+AllowUsers cristian
+
+# Explicitly deny root user
+DenyUsers root
+
+# Logging Configuration
+# Use AUTH facility for logging
+SyslogFacility AUTH
+
+# Verbose logging for security auditing
+LogLevel VERBOSE
+
+# Security Banner
+# Display warning message before login
+Banner /etc/ssh/banner
+
+# Additional Security Settings
+# Strict permission checking on user files
+StrictModes yes
+
+# Ignore legacy .rhosts files
+IgnoreRhosts yes
+
+# Disable host-based authentication
+HostbasedAuthentication no
+
+# Don't allow users to set environment variables
+PermitUserEnvironment no
+
+# Disable compression (potential security risk)
+Compression no
+
+# TCP keepalive (detect dead connections)
+TCPKeepAlive yes
+
+# Don't use DNS for reverse lookups (faster connections)
+UseDNS no
+
+# SFTP Subsystem Configuration
+# Secure file transfer with detailed logging
+Subsystem sftp /usr/lib/ssh/sftp-server -f AUTHPRIV -l INFO
