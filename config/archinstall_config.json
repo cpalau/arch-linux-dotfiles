@@ -158,7 +158,7 @@
         "type": "iso"
     },
     "ntp": true,
-    "packages": [],
+    "packages": ["git", "wget", "vim"],
     "parallel_downloads": 0,
     "profile_config": {
         "gfx_driver": null,
@@ -169,7 +169,7 @@
             "main": "Minimal"
         }
     },
-    "script": null,
+
     "services": [],
     "swap": true,
     "timezone": "Europe/Madrid",
