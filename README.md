@@ -35,8 +35,8 @@ arch-linux/
 │   ├── .bashrc                    # My bash configuration (to be created)
 │   ├── .vimrc                     # My vim configuration (to be created)
 │   ├── .gitconfig                 # My git configuration ✅
-│   ├── sshd_config                # SSH server configuration ✅
-│   ├── ssh_banner                 # SSH login banner ✅
+│   ├── .sshd_config               # SSH server configuration ✅
+│   ├── .ssh_banner                # SSH login banner ✅
 │   └── .config/                   # My application configurations (to be created)
 ├── private/                        # Sensitive files (NOT committed to git) ✅
 │   ├── ssh/                       # SSH keys and configuration
@@ -329,8 +329,8 @@ refactor: improve network detection logic
 I've included a hardened SSH server configuration for secure remote access:
 
 #### Files Included:
-- **`dotfiles/sshd_config`**: Secure SSH server configuration for Arch Linux ✅
-- **`dotfiles/ssh_banner`**: Warning banner displayed before login ✅
+- **`dotfiles/.sshd_config`**: Secure SSH server configuration for Arch Linux ✅
+- **`dotfiles/.ssh_banner`**: Warning banner displayed before login ✅
 
 #### Security Features Implemented:
 - **No Root Login**: Root access via SSH completely disabled
@@ -346,8 +346,8 @@ I've included a hardened SSH server configuration for secure remote access:
 #### Installation Instructions:
 ```bash
 # Copy SSH configuration files
-sudo cp dotfiles/sshd_config /etc/ssh/sshd_config
-sudo cp dotfiles/ssh_banner /etc/ssh/banner
+sudo cp dotfiles/.sshd_config /etc/ssh/sshd_config
+sudo cp dotfiles/.ssh_banner /etc/ssh/banner
 
 # Set proper permissions
 sudo chmod 644 /etc/ssh/sshd_config /etc/ssh/banner
