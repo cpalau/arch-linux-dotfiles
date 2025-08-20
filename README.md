@@ -36,6 +36,9 @@ arch-linux/
 │   ├── .vimrc                     # My vim configuration (to be created)
 │   ├── .gitconfig                 # My git configuration ✅
 │   ├── .sshd_config               # SSH server configuration ✅
+│   ├── .gnupg/                    # GnuPG configuration directory ✅
+│   │   ├── gpg.conf               # GnuPG main configuration ✅
+│   │   └── gpg-agent.conf         # GPG agent configuration ✅
 │   └── .config/                   # My application configurations (to be created)
 ├── private/                        # Sensitive files (NOT committed to git) ✅
 │   ├── ssh/                       # SSH keys and configuration
@@ -364,6 +367,68 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 - Change the port number (2222) to your preferred custom port
 - Ensure you have SSH keys set up before disabling password authentication
 - Test the configuration from another terminal before closing your current session
+
+### GnuPG Configuration
+
+I've included a comprehensive GnuPG configuration for secure encryption, signing, and key management:
+
+#### Files Included:
+- **`dotfiles/.gnupg/gpg.conf`**: Main GnuPG configuration with security hardening ✅
+- **`dotfiles/.gnupg/gpg-agent.conf`**: GPG agent configuration for key caching ✅
+- **`dotfiles/.gitconfig`**: Enhanced Git configuration with PGP signing ✅
+
+#### Security Features Implemented:
+- **Automatic Commit Signing**: All commits and tags signed with PGP key
+- **Strong Cryptographic Preferences**: AES-256, SHA-512, secure algorithms only
+- **Enhanced Key Display**: Long key IDs and fingerprints for better verification
+- **Secure Caching**: 30-minute default cache with 2-hour maximum
+- **Hardened Defaults**: Disabled weak algorithms and improved security settings
+- **Cross-Certification**: Required for subkeys to prevent attacks
+- **UTF-8 Support**: Proper international character handling
+
+#### Key Information:
+- **Key ID**: `FC2047CC47F04C1E`
+- **User**: Cristian Palau <cp@cristianpalau.com>
+- **Algorithm**: RSA 4096-bit
+- **Expiration**: No expiration
+
+#### Installation Instructions:
+```bash
+# Install GnuPG configuration files
+ln -sf "$(pwd)/dotfiles/.gnupg/gpg.conf" ~/.gnupg/gpg.conf
+ln -sf "$(pwd)/dotfiles/.gnupg/gpg-agent.conf" ~/.gnupg/gpg-agent.conf
+ln -sf "$(pwd)/dotfiles/.gitconfig" ~/.gitconfig
+
+# Set proper permissions
+chmod 700 ~/.gnupg
+chmod 600 ~/.gnupg/gpg.conf ~/.gnupg/gpg-agent.conf
+
+# Restart GPG agent to apply changes
+gpgconf --kill gpg-agent
+gpg-agent --daemon
+
+# Verify configuration
+gpg --list-secret-keys --keyid-format LONG
+git config --get user.signingkey
+
+# Test signing functionality
+echo "test message" | gpg --clearsign
+git log --show-signature -1
+```
+
+#### Important Notes:
+- The configuration uses key ID `FC2047CC47F04C1E` - replace with your actual key ID
+- Email synchronized between Git and GnuPG: `cp@cristianpalau.com`
+- Pinentry set to GTK2 - adjust for your desktop environment (Qt, CLI, etc.)
+- All commits and tags will be automatically signed when configuration is active
+- Backup your private keys securely before using this configuration
+
+#### Environment Variables (Optional):
+```bash
+# Add to your shell profile (~/.bashrc, ~/.zshrc) if using SSH support:
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+```
 
 ### General Security Practices
 

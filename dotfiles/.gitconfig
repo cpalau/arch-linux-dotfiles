@@ -1,3 +1,118 @@
+# Git Configuration for Cristian Palau
+# File: ~/.gitconfig
+#
+# This configuration provides settings for Git operations including
+# user identification, PGP signing, and security preferences.
+#
+# Installation: ln -sf "$(pwd)/dotfiles/.gitconfig" ~/.gitconfig
+
+# ============================================================================
+# USER IDENTIFICATION
+# ============================================================================
+
 [user]
 	name = Cristian Palau
-	email = cpalau@gmail.com
+	email = cp@cristianpalau.com
+	# PGP key ID for signing commits and tags
+	# Get your key ID with: gpg --list-secret-keys --keyid-format LONG
+	signingkey = FC2047CC47F04C1E
+
+# ============================================================================
+# COMMIT SIGNING CONFIGURATION
+# ============================================================================
+
+[commit]
+	# Automatically sign all commits with GPG
+	# This ensures commit authenticity and integrity
+	gpgsign = true
+
+[tag]
+	# Automatically sign all annotated tags with GPG
+	# This ensures tag authenticity and integrity
+	gpgsign = true
+
+# ============================================================================
+# GPG PROGRAM CONFIGURATION
+# ============================================================================
+
+[gpg]
+	# GPG program to use for signing
+	# Use 'gpg' for GnuPG version 1.x or 2.x
+	program = gpg
+
+# ============================================================================
+# GIT BEHAVIOR CONFIGURATION
+# ============================================================================
+
+[init]
+	# Set default branch name for new repositories
+	defaultBranch = main
+
+[core]
+	# Use system editor for commit messages
+	# editor = vim
+	
+	# Handle line endings automatically
+	autocrlf = input
+	
+	# Prevent issues with case-insensitive filesystems
+	ignorecase = false
+
+[pull]
+	# Use rebase instead of merge when pulling
+	# This creates a cleaner commit history
+	rebase = true
+
+[push]
+	# Push only the current branch by default
+	# This prevents accidentally pushing all branches
+	default = simple
+
+# ============================================================================
+# BRANCH AND MERGE CONFIGURATION
+# ============================================================================
+
+[branch]
+	# Automatically set up tracking for new branches
+	autosetupmerge = always
+	autosetuprebase = always
+
+[merge]
+	# Use a more informative merge commit message format
+	# Include branch information in merge commits
+	log = true
+
+# ============================================================================
+# ALIAS CONFIGURATION
+# ============================================================================
+
+[alias]
+	# Common shortcuts for frequently used commands
+	st = status
+	ci = commit
+	br = branch
+	co = checkout
+	df = diff
+	lg = log --oneline --graph --decorate --all
+	
+	# Show commit signatures
+	logs = log --show-signature
+	
+	# Verify commit signatures in log
+	verify = log --pretty="format:%h %G? %aN  %s"
+
+# ============================================================================
+# SECURITY SETTINGS
+# ============================================================================
+
+[transfer]
+	# Verify that received objects are valid
+	fsckobjects = true
+
+[fetch]
+	# Verify that fetched objects are valid
+	fsckobjects = true
+
+[receive]
+	# Verify that pushed objects are valid (for repositories you maintain)
+	fsckobjects = true
