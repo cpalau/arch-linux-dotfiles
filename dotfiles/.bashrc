@@ -14,8 +14,8 @@ esac
 # This section contains all environment variable definitions
 
 # GnuPG Configuration
-# Set custom GnuPG home directory to use dotfiles configuration
-export GNUPGHOME="$HOME/dotfiles/.gnupg"
+# Use standard GnuPG directory (symlinked to dotfiles during installation)
+export GNUPGHOME="$HOME/.gnupg"
 
 # Editor Configuration
 export EDITOR="vim"
