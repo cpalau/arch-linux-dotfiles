@@ -24,7 +24,7 @@ arch-linux/
 ├── scripts/
 │   ├── 00-pre-install.sh          # Network detection + WiFi/ethernet setup + archinstall execution ✅
 │   ├── 01-post-install.sh         # My post-installation configuration (to be created)
-│   ├── 02-packages.sh             # My package installation (to be created)
+│   ├── 02-packages.sh             # My package installation ✅
 │   ├── 03-dotfiles.sh             # My dotfiles deployment (to be created)
 │   ├── 04-services.sh             # My system services setup (to be created)
 │   └── utils/
@@ -284,7 +284,7 @@ Example from `aur/development.txt`:
 
 ### To Do 📋
 - [ ] Post-installation system configuration
-- [ ] Package installation scripts (02-packages.sh)
+- [x] Package installation scripts (02-packages.sh)
 - [ ] Dotfiles management (03-dotfiles.sh)
 - [ ] Service configuration (04-services.sh)
 - [ ] User environment setup
