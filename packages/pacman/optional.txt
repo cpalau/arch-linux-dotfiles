@@ -3,3 +3,68 @@
 
 # Add optional packages here
 # Format: - package_name
+
+# ImageMagick
+# Software suite for creating, editing, composing, or converting bitmap images
+# https://imagemagick.org/
+- imagemagick
+
+# FFmpeg
+# Complete, cross-platform solution to record, convert and stream audio and video
+# https://ffmpeg.org/
+- ffmpeg
+
+# FFmpeg 4.4
+# Legacy version of FFmpeg for compatibility with older applications
+# https://ffmpeg.org/
+- ffmpeg4.4
+
+# Graphviz
+# Graph visualization software for rendering structural information as diagrams
+# https://graphviz.org/
+- graphviz
+
+# fx
+# Command-line JSON processing tool and viewer with interactive interface
+# https://github.com/antonmedv/fx
+- fx
+
+# Ollama
+# Get up and running with large language models locally
+# https://ollama.com/
+- ollama
+
+# GPG-TUI
+# Terminal user interface for GnuPG
+# https://github.com/orhun/gpg-tui
+- gpg-tui
+
+# aria2
+# Lightweight multi-protocol & multi-source command-line download utility
+# https://aria2.github.io/
+- aria2
+
+# rTorrent
+# Ncurses BitTorrent client based on libTorrent
+# https://rakshasa.github.io/rtorrent/
+- rtorrent
+
+# Sqlmap
+# Automatic SQL injection and database takeover tool
+# https://sqlmap.org/
+- sqlmap
+
+# MPlayer
+# Media player that supports a wide variety of video and audio formats
+# http://www.mplayerhq.hu/
+- mplayer
+
+# FLAC
+# Free lossless audio codec for compressing audio without quality loss
+# https://xiph.org/flac/
+- flac
+
+# Mono
+# Cross-platform, open source .NET framework implementation
+# https://www.mono-project.com/
+- mono

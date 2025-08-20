@@ -8,3 +8,258 @@
 # Dev tools, env vars, task runner - replaces asdf, nvm, pyenv, etc.
 # https://github.com/jdx/mise
 - mise
+
+# GNU Compiler Collection
+# Collection of compilers for C, C++, and other programming languages
+# https://gcc.gnu.org/
+- gcc
+
+# Rust programming language
+# Systems programming language focused on safety, speed, and concurrency
+# https://www.rust-lang.org/
+- rust
+
+# Go programming language
+# Open source programming language that makes it easy to build simple, reliable, and efficient software
+# https://golang.org/
+- go
+
+# Python programming language
+# High-level, interpreted programming language with dynamic semantics
+# https://www.python.org/
+- python
+
+# UV Python package installer
+# Extremely fast Python package installer and resolver
+# https://github.com/astral-sh/uv
+- uv
+
+# Node.js
+# JavaScript runtime built on Chrome's V8 JavaScript engine
+# https://nodejs.org/
+- nodejs
+
+# Ruby
+# Dynamic, open source programming language with a focus on simplicity and productivity
+# https://www.ruby-lang.org/
+- ruby
+
+# JRuby
+# Ruby implementation on the Java Virtual Machine
+# https://www.jruby.org/
+- jruby
+
+# Zig
+# General-purpose programming language and toolchain for maintaining robust, optimal, and reusable software
+# https://ziglang.org/
+- zig
+
+# Apache Subversion
+# Centralized version control system
+# https://subversion.apache.org/
+- subversion
+
+# Mercurial
+# Distributed version control system
+# https://www.mercurial-scm.org/
+- mercurial
+
+# Apache Maven
+# Build automation and project management tool for Java projects
+# https://maven.apache.org/
+- maven
+
+# AWS Command Line Interface
+# Unified tool to manage AWS services from command line
+# https://aws.amazon.com/cli/
+- aws-cli
+
+# Azure CLI
+# Command-line interface for Microsoft Azure
+# https://docs.microsoft.com/en-us/cli/azure/
+- azure-cli
+
+# Hugo
+# Fast and flexible static site generator written in Go
+# https://gohugo.io/
+- hugo
+
+# Kubectl
+# Command-line tool for controlling Kubernetes clusters
+# https://kubernetes.io/docs/reference/kubectl/
+- kubectl
+
+# Kotlin
+# Statically typed programming language for modern multiplatform applications
+# https://kotlinlang.org/
+- kotlin
+
+# UPX
+# Ultimate packer for executables to compress and reduce file size
+# https://upx.github.io/
+- upx
+
+# Ruff
+# Extremely fast Python linter and code formatter written in Rust
+# https://github.com/astral-sh/ruff
+- ruff
+
+# Gradle
+# Build automation tool for multi-language software development
+# https://gradle.org/
+- gradle
+
+# Julia
+# High-level, high-performance dynamic programming language for technical computing
+# https://julialang.org/
+- julia
+
+# GitHub CLI
+# GitHub's official command line tool
+# https://cli.github.com/
+- github-cli
+
+# Mermaid CLI
+# Command-line interface for mermaid diagram generation
+# https://github.com/mermaid-js/mermaid-cli
+- mermaid-cli
+
+# Protocol Buffers
+# Language-neutral, platform-neutral extensible mechanism for serializing structured data
+# https://developers.google.com/protocol-buffers
+- protobuf
+
+# npm
+# Package manager for Node.js
+# https://www.npmjs.com/
+- npm
+
+# Meson
+# Open source build system meant to be both extremely fast and as user friendly as possible
+# https://mesonbuild.com/
+- meson
+
+# Groovy
+# Dynamic, object-oriented programming language for the Java platform
+# https://groovy-lang.org/
+- groovy
+
+# Erlang
+# General-purpose, concurrent, functional programming language
+# https://www.erlang.org/
+- erlang
+
+# Elixir
+# Dynamic, functional language designed for building maintainable and scalable applications
+# https://elixir-lang.org/
+- elixir
+
+# OpenJDK 8 Development Kit
+# OpenJDK Java 8 development kit
+# https://openjdk.java.net/projects/jdk8/
+- jdk8-openjdk
+
+# OpenJDK 8 Runtime Environment
+# OpenJDK Java 8 full runtime environment
+# https://openjdk.java.net/projects/jdk8/
+- jre8-openjdk
+
+# OpenJDK 8 Documentation
+# OpenJDK Java 8 documentation
+# https://openjdk.java.net/projects/jdk8/
+- openjdk8-doc
+
+# OpenJDK 11 Development Kit
+# OpenJDK Java 11 development kit
+# https://openjdk.java.net/projects/jdk/11/
+- jdk11-openjdk
+
+# OpenJDK 11 Runtime Environment
+# OpenJDK Java 11 full runtime environment
+# https://openjdk.java.net/projects/jdk/11/
+- jre11-openjdk
+
+# OpenJDK 11 Documentation
+# OpenJDK Java 11 documentation
+# https://openjdk.java.net/projects/jdk/11/
+- openjdk11-doc
+
+# OpenJDK 17 Development Kit
+# OpenJDK Java 17 development kit
+# https://openjdk.java.net/projects/jdk/17/
+- jdk17-openjdk
+
+# OpenJDK 17 Runtime Environment
+# OpenJDK Java 17 full runtime environment
+# https://openjdk.java.net/projects/jdk/17/
+- jre17-openjdk
+
+# OpenJDK 17 Documentation
+# OpenJDK Java 17 documentation
+# https://openjdk.java.net/projects/jdk/17/
+- openjdk17-doc
+
+# OpenJDK 21 Development Kit
+# OpenJDK Java 21 development kit
+# https://openjdk.java.net/projects/jdk/21/
+- jdk21-openjdk
+
+# OpenJDK 21 Runtime Environment
+# OpenJDK Java 21 full runtime environment
+# https://openjdk.java.net/projects/jdk/21/
+- jre21-openjdk
+
+# OpenJDK 21 Documentation
+# OpenJDK Java 21 documentation
+# https://openjdk.java.net/projects/jdk/21/
+- openjdk21-doc
+
+# OpenJDK Development Kit (Latest)
+# OpenJDK Java 24 development kit
+# https://openjdk.java.net/
+- jdk-openjdk
+
+# OpenJDK Runtime Environment (Latest)
+# OpenJDK Java 24 full runtime environment
+# https://openjdk.java.net/
+- jre-openjdk
+
+# OpenJDK Documentation (Latest)
+# OpenJDK Java 24 documentation
+# https://openjdk.java.net/
+- openjdk-doc
+
+# Tree-sitter
+# Parser generator tool and incremental parsing library
+# https://tree-sitter.github.io/tree-sitter/
+- tree-sitter
+
+# Prettier
+# Opinionated code formatter for web development languages
+# https://prettier.io/
+- prettier
+
+# bpython
+# Fancy interface to the Python interpreter
+# https://bpython-interpreter.org/
+- bpython
+
+# IPython
+# Enhanced interactive Python shell with advanced features
+# https://ipython.org/
+- ipython
+
+# Lua
+# Powerful, efficient, lightweight, embeddable scripting language
+# https://www.lua.org/
+- lua
+
+# NVM
+# Node Version Manager for managing multiple Node.js versions
+# https://github.com/nvm-sh/nvm
+- nvm
+
+# Scrapy
+# Fast and powerful web scraping and web crawling framework
+# https://scrapy.org/
+- scrapy

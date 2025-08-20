@@ -14,13 +14,53 @@
 # https://www.gnu.org/software/wget/
 - wget
 
+# Command-line tool for transferring data
+# Tool for transferring data from or to servers using various protocols
+# https://curl.se/
+- curl
+
 # Modern text editor
 - neovim
+
+# GNU Emacs
+# Extensible, customizable, free/libre text editor
+# https://www.gnu.org/software/emacs/
+- emacs
+
+# Vim
+# Highly configurable text editor built to make creating and changing any kind of text very efficient
+# https://www.vim.org/
+- vim
 
 # Archive and compression tools
 # High compression archiver with multiple format support
 # https://github.com/p7zip-project/p7zip
 - p7zip
+
+# Zip
+# Archiver for .zip files
+# http://www.info-zip.org/pub/infozip/
+- zip
+
+# Unzip
+# Extractor for .zip archives
+# http://www.info-zip.org/pub/infozip/
+- unzip
+
+# Unrar
+# Extractor for .rar archives
+# https://www.rarlab.com/rar_add.htm
+- unrar
+
+# Bzip2
+# High-quality data compression program
+# https://sourceware.org/bzip2/
+- bzip2
+
+# Perl
+# Highly capable, feature-rich programming language
+# https://www.perl.org/
+- perl
 
 # JSON processor and query tool
 # Command-line JSON processor for parsing and manipulating data
@@ -31,3 +71,228 @@
 # Open platform for developing, shipping, and running applications
 # https://github.com/docker/docker-ce
 - docker
+
+# GNU Privacy Guard
+# Complete and free implementation of the OpenPGP standard
+# https://www.gnupg.org/
+- gnupg
+
+# OpenSSH
+# Secure Shell protocol implementation for secure remote access
+# https://www.openssh.com/
+- openssh
+
+# Rclone
+# Command line program to sync files and directories to/from cloud storage
+# https://rclone.org/
+- rclone
+
+# Ripgrep
+# Line-oriented search tool that recursively searches directories for regex patterns
+# https://github.com/BurntSushi/ripgrep
+- ripgrep
+
+# fd
+# Simple, fast and user-friendly alternative to find
+# https://github.com/sharkdp/fd
+- fd
+
+# eza
+# Modern replacement for ls with additional features and better defaults
+# https://github.com/eza-community/eza
+- eza
+
+# zoxide
+# Smarter cd command that learns your habits
+# https://github.com/ajeetdsouza/zoxide
+- zoxide
+
+# btop
+# Resource monitor that shows usage and stats for processor, memory, disks, network and processes
+# https://github.com/aristocratos/btop
+- btop
+
+# Fastfetch
+# System information fetching tool written in C
+# https://github.com/fastfetch-cli/fastfetch
+- fastfetch
+
+# Impala
+# Fast, secure communication and file transfer utility
+# https://github.com/impala-shell/impala-shell
+- impala
+
+# Lazygit
+# Simple terminal UI for git commands
+# https://github.com/jesseduffield/lazygit
+- lazygit
+
+# Lazydocker
+# Simple terminal UI for docker and docker-compose
+# https://github.com/jesseduffield/lazydocker
+- lazydocker
+
+# Rsync
+# Fast, versatile, remote (and local) file-copying tool
+# https://rsync.samba.org/
+- rsync
+
+# Partclone
+# Partition image/backup utility for creating images of used blocks only
+# https://partclone.org/
+- partclone
+
+# SQLite
+# Self-contained, serverless, zero-configuration, transactional SQL database engine
+# https://www.sqlite.org/
+- sqlite
+
+# Wine
+# Compatibility layer capable of running Windows applications on Unix-like systems
+# https://www.winehq.org/
+- wine
+
+# Alacritty
+# GPU-accelerated terminal emulator written in Rust
+# https://github.com/alacritty/alacritty
+- alacritty
+
+# Base-devel
+# Meta package providing essential tools for building packages from AUR
+# https://archlinux.org/groups/x86_64/base-devel/
+- base-devel
+
+# Whois
+# Intelligent WHOIS client for looking up domain names and IP addresses
+# https://github.com/rfc1036/whois
+- whois
+
+# Ansible
+# Automation platform for configuration management, app deployment, and orchestration
+# https://www.ansible.com/
+- ansible
+
+# File
+# Determine file type using magic numbers
+# https://www.darwinsys.com/file/
+- file
+
+# Timeshift
+# System restore tool that creates filesystem snapshots using rsync and hardlinks
+# https://github.com/teejee2008/timeshift
+- timeshift
+
+# lsof
+# List open files and the processes that opened them
+# https://github.com/lsof-org/lsof
+- lsof
+
+# Man pages
+# Collection of manual pages for UNIX commands and programming interfaces
+# https://www.kernel.org/doc/man-pages/
+- man-pages
+
+# Man pages (Spanish)
+# Spanish translations of manual pages
+# https://www.kernel.org/doc/man-pages/
+- man-pages-es
+
+# Tree
+# Recursive directory listing command that produces a depth-indented listing of files
+# http://mama.indstate.edu/users/ice/tree/
+- tree
+
+# Less
+# Pager program similar to more, but with additional features
+# https://www.greenwoodsoftware.com/less/
+- less
+
+# Gettext
+# GNU internationalization and localization system
+# https://www.gnu.org/software/gettext/
+- gettext
+
+# Samba
+# SMB/CIFS file and print server for Windows interoperability
+# https://www.samba.org/
+- samba
+
+# SMBclient
+# Command-line SMB/CIFS client for accessing Windows shares
+# https://www.samba.org/
+- smbclient
+
+# Lynx
+# Text-based web browser
+# https://lynx.invisible-island.net/
+- lynx
+
+# Screen
+# Full-screen window manager that multiplexes a physical terminal
+# https://www.gnu.org/software/screen/
+- screen
+
+# Tmux
+# Terminal multiplexer that allows multiple terminal sessions within a single window
+# https://github.com/tmux/tmux
+- tmux
+
+# CUPS
+# Common UNIX Printing System for managing printers and print jobs
+# https://www.cups.org/
+- cups
+
+# Flatpak
+# Application distribution framework for Linux desktop applications
+# https://flatpak.org/
+- flatpak
+
+# jc
+# Command-line tool that converts output of popular command-line tools to JSON
+# https://github.com/kellyjonbrazil/jc
+- jc
+
+# Diffutils
+# Utilities for comparing files and directories
+# https://www.gnu.org/software/diffutils/
+- diffutils
+
+# Grep
+# Command-line utility for searching text patterns in files
+# https://www.gnu.org/software/grep/
+- grep
+
+# Snappy
+# Fast compression and decompression library
+# https://github.com/google/snappy
+- snappy
+
+# Traceroute
+# Network diagnostic tool for displaying the route packets take to a network host
+# http://traceroute.sourceforge.net/
+- traceroute
+
+# exFAT utils
+# Utilities for creating, checking, repairing and labelling exFAT filesystems
+# https://github.com/relan/exfat
+- exfat-utils
+
+# Nmap
+# Network exploration tool and security/port scanner
+# https://nmap.org/
+- nmap
+
+# Which
+# Utility to locate a command and display its pathname or alias
+# https://www.gnu.org/software/which/
+- which
+
+# Zstd
+# Fast real-time compression algorithm and tool
+# https://facebook.github.io/zstd/
+- zstd
+
+# Ghostscript
+# Interpreter for PostScript and PDF files
+# https://www.ghostscript.com/
+- ghostscript

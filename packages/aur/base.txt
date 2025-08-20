@@ -3,3 +3,8 @@
 
 # Add essential AUR packages here
 # Format: - package_name
+
+# Fuzzy finder
+# Command-line fuzzy finder for interactive file and command selection
+# https://github.com/junegunn/fzf
+- fzf

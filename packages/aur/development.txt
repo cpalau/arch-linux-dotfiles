@@ -11,3 +11,17 @@
 # https://github.com/sst/opencode
 - opencode-bin
 
+# Google Cloud CLI
+# Command-line interface for Google Cloud Platform services
+# https://cloud.google.com/sdk/gcloud
+- google-cloud-cli
+
+# usql
+# Universal command-line interface for SQL databases
+# https://github.com/xo/usql
+- usql
+
+# Vagrant
+# Tool for building and managing portable virtual development environments
+# https://www.vagrantup.com/
+- vagrant
