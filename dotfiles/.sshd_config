@@ -91,10 +91,6 @@ SyslogFacility AUTH
 # Verbose logging for security auditing
 LogLevel VERBOSE
 
-# Security Banner
-# Display warning message before login
-Banner /etc/ssh/banner
-
 # Additional Security Settings
 # Strict permission checking on user files
 StrictModes yes
