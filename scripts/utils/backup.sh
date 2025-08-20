@@ -16,6 +16,12 @@ source "$SCRIPT_DIR/colors.sh"
 source "$SCRIPT_DIR/logging.sh"
 source "$SCRIPT_DIR/helpers.sh"
 
+# Global backup configuration
+BACKUP_DEVICE="/dev/sda1"
+BACKUP_MOUNT_POINT="/mnt/backup"
+BACKUP_DIR="$BACKUP_MOUNT_POINT/backups"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+
 # Function to ensure Timeshift is available
 ensure_timeshift_available() {
     log_step "Checking Timeshift availability..."
@@ -40,11 +46,6 @@ create_timeshift_backup() {
     local backup_comment="${2:-Automated system backup}"
     
     log_step "Creating system backup with Timeshift (rsync mode)..."
-    
-    local BACKUP_DEVICE="/dev/sda1"
-    local BACKUP_MOUNT_POINT="/mnt/backup"
-    local BACKUP_DIR="$BACKUP_MOUNT_POINT/backups"
-    local TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
     
     # Check if backup device exists
     if [ ! -b "$BACKUP_DEVICE" ]; then
@@ -126,9 +127,9 @@ show_usage() {
     echo ""
     echo "The script will:"
     echo "  - Install Timeshift if not available"
-    echo "  - Mount backup device (/dev/sda1) if not mounted"
+    echo "  - Mount backup device ($BACKUP_DEVICE) if not mounted"
     echo "  - Create timestamped backup with rsync backend"
-    echo "  - Store backup in /dev/sda1/backups/"
+    echo "  - Store backup in $BACKUP_DIR/"
     echo ""
 }
 
@@ -155,5 +156,5 @@ ensure_timeshift_available
 create_timeshift_backup "$BACKUP_TYPE" "$BACKUP_COMMENT"
 
 log_success "Backup process completed!"
-log_info "Backup location: /dev/sda1/backups (if backup was successful)"
+log_info "Backup location: $BACKUP_DIR (if backup was successful)"
 log_info "Use 'timeshift --list' to view available snapshots"
